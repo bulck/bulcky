@@ -4,9 +4,9 @@
 [submodule "01_software/02_src/bulcky"]
 	path = 01_software/02_src/bulcky
 	url = https://github.com/bulck/bulckyUI.git
-[submodule "04_CultiPi/01_Software/01_Bulcky"]
-	path = 04_CultiPi/01_Software/01_Bulcky
-	url = https://github.com/bulck/bulckyCore.git
 [submodule "01_software/02_src/mobile"]
 	path = 01_software/02_src/mobile
 	url = https://github.com/bulck/bulckyMobile.git
+[submodule "02_bulcky_services/01_bulckyPi"]
+	path = 02_bulcky_services/01_bulckyPi
+	url = https://github.com/bulck/bulckyCore.git
