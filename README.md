@@ -1,9 +1,10 @@
 **Bulcky**
 ============
 
-Le Bulcky est une multiprise connectée permettant de gérant des états de variation
-ou de On/Off sur laquelle peut être connecté diverses capteurs permettant de réguler
-le climat.
+Le Bulcky est une multiprise connectée grâce à un dongle Wifi ou un câble ethernet,
+gérant des états de variation ou de On/Off sur laquelle divers capteurs peuvent être
+reliés petmettant ainsi une gestion de climat par régulation.
+
 Toutes les informations nécéssaires sont disponibles sur le site officiel:
 
  [http://www.bulck.fr](http://www.bulck.fr)
