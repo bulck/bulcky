@@ -1,12 +1,12 @@
 [submodule "01_software/02_src/cultibox/main/cultibox.wiki"]
     path = 01_software/02_src/cultibox/main/cultibox.wiki
     url = https://github.com/cultibox/cultibox.wiki.git
-[submodule "01_software/02_src/mobile"]
-	path = 01_software/02_src/mobile
-	url = https://github.com/bulck/mobile.git
 [submodule "01_software/02_src/bulcky"]
 	path = 01_software/02_src/bulcky
 	url = https://github.com/bulck/bulckyUI.git
 [submodule "04_CultiPi/01_Software/01_Bulcky"]
 	path = 04_CultiPi/01_Software/01_Bulcky
 	url = https://github.com/bulck/bulckyCore.git
+[submodule "01_software/02_src/mobile"]
+	path = 01_software/02_src/mobile
+	url = https://github.com/bulck/bulckyMobile.git
