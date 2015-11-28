@@ -1,0 +1,9 @@
+Package: bulckypi
+Version: 1.0.0-debian
+Section: net
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: Bulckypi network server
+

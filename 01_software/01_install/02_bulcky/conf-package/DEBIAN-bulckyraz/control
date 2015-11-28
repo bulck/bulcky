@@ -1,0 +1,9 @@
+Package: bulckyraz
+Version: 1.0.0-debian
+Section: Utilities
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: BulckyRAZ resets Buclky configuration
+

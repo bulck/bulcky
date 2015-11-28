@@ -1,0 +1,8 @@
+Package: bulckyconf
+Version: 1.0.0-debian
+Section: Utilities
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: Check and configure the Bulcky environment

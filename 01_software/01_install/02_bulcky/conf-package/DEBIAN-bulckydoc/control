@@ -1,0 +1,9 @@
+Package: bulckydoc
+Version: 1.0.0-debian
+Section: Documentation
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: Bulcky documentation package
+

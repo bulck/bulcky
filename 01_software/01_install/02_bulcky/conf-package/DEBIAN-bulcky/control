@@ -1,0 +1,9 @@
+Package: bulcky
+Version: 1.0.0-debian
+Section: net
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: Bulcky web interface
+

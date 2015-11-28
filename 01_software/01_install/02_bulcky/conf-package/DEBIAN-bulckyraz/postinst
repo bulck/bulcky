@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -f /etc/init.d/bulckyraz ]; then
+    update-rc.d bulckyraz defaults
+fi
+
+chown -R bulcky:bulcky /opt/bulckyraz
+chown bulcky:bulcky /etc/init.d/bulckyraz
+chmod 744 /etc/init.d/bulckyraz
+
+/etc/init.d/bulckyraz force-reload

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$1" == "purge" ] || [ "$1" == "remove" ]; then
+    if [ "`ps ax|grep bulckyTime.tcl|grep tclsh`" != "" ]; then
+        for process in `ps ax|grep bulckyTime.tcl|grep tclsh|awk -F" " '{print $1}'`; do
+            if [ "$process" != "" ]; then
+                kill -9 $process
+            fi
+        done
+    fi
+
+    update-rc.d -f bulckytime remove >/dev/null 2>&1
+
+    if [ -f /etc/init.d/bulckytime ]; then
+        rm -Rf /etc/init.d/bulckytime
+    fi
+fi
+
+
+sed -i "/bulcky ALL = (root) NOPASSWD: \/bin\/date/d" /etc/sudoers

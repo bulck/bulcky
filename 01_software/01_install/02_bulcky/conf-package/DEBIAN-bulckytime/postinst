@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -f /etc/init.d/bulckytime ]; then
+    update-rc.d bulckytime defaults
+fi
+
+if [  "`cat /etc/sudoers|grep bulcky|grep date`" == "" ]; then
+    echo "bulcky ALL = (root) NOPASSWD: /bin/date" >> /etc/sudoers
+fi
+
+chown -R bulcky:bulcky /opt/bulckytime
+chown bulcky:bulcky /etc/init.d/bulckytime
+chmod 744 /etc/init.d/bulckytime
+
+/etc/init.d/bulckytime force-reload

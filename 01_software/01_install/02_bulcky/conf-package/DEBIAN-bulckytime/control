@@ -1,0 +1,9 @@
+Package: bulckytime
+Version: 1.0.0-debian
+Section: Utilities
+Maintainer: Yann Genevois <yann.genevois@bulck.fr>
+Homepage: http://www.bulck.fr
+Priority: extra
+Architecture: armhf
+Description: Bulckytime manage time of the Bulcky
+

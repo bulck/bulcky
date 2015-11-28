@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#Upgrade case:
+if [ -d /var/www/bulcky ]; then
+    touch /tmp/bulcky_upgrade
+fi
+
+exit 0

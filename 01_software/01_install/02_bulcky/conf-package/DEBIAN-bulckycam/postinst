@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -f /etc/init.d/bulckycam ]; then
+    update-rc.d bulckycam defaults
+fi
+
+chown -R bulcky:bulcky /opt/bulkycam
+chown bulcky:bulcky /etc/init.d/bulckycam /etc/init.d/mjpg_streamer
+chown -R bulcky:bulcky /etc/culticam
+chmod 744 /etc/init.d/bulckycam
+chmod 744 /etc/init.d/mjpg_streamer
+
+if [  "`cat /etc/sudoers|grep bulcky|grep mjpg_streamer`" == "" ]; then
+    echo "bulcky ALL = (root) NOPASSWD: /etc/init.d/mjpg_streamer" >> /etc/sudoers
+fi
+
+/etc/init.d/bulckycam force-reload
+

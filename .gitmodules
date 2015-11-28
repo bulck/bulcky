@@ -1,4 +1,4 @@
-[submodule "01_software/02_src/cultibox/main/cultibox.wiki"]
+[submodule "01_software/02_src/bulckyface/main/bulckyface.wiki"]
     path = 01_software/02_src/cultibox/main/cultibox.wiki
     url = https://github.com/cultibox/cultibox.wiki.git
 [submodule "01_software/02_src/bulcky"]

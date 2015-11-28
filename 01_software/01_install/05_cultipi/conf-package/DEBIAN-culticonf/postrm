@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ "$1" == "purge" ]; then
-    if [ -f /etc/default/culticron ]; then
-        rm /etc/default/culticron
-    fi
-fi
-
-

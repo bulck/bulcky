@@ -1,0 +1,74 @@
+#!/bin/bash
+
+sed -i "/bulcky ALL = (root) NOPASSWD: \/sbin\/shutdown/d" /etc/sudoers
+
+if [ "$1" == "purge" ]; then
+    if [ "`ps ax|grep bulckyPi.tcl|grep tclsh`" != "" ]; then
+        for process in `ps ax|grep bulckyPi.tcl|grep tclsh|awk -F" " '{print $1}'`; do
+            if [ "$process" != "" ]; then
+                kill -9 $process
+            fi
+        done
+
+        for pid in "`ps ax|grep serveurLog.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+
+        for pid in "`ps ax|grep serverPlugUpdate.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+
+        for pid in "`ps ax|grep serverHisto.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+    fi
+
+    if [ -d /opt/bulckypi ]; then
+        rm -Rf /opt/bulckypi
+    fi
+
+    if [ -d /etc/bulckypi ]; then
+        rm -Rf /etc/bulckypi
+    fi
+
+    update-rc.d -f bulckypi remove >/dev/null 2>&1
+
+    if [ -f /etc/init.d/bulckypi ]; then
+        rm -Rf /etc/init.d/bulckypi
+    fi
+
+    if [ -d /var/log/bulckypi ]; then
+        rm -Rf /var/log/bulckypi
+    fi
+
+    if [ -f /etc/default/bulckycron ]; then
+        rm /etc/default/bulckycron
+    fi
+
+    sed -i "/.*\/etc\/init.d\/bulckycron.*/d" /etc/crontab
+
+    rm -Rf /etc/bulckypi/conf_tmp
+fi
+
+if [ "$1" == "remove" ]; then
+    update-rc.d -f bulckypi remove > /dev/null 2>&1 
+
+    if [ -f /etc/init.d/bulckypi ]; then
+        rm -Rf /etc/init.d/bulckypi
+    fi
+
+    sed -i "/.*\/etc\/init.d\/bulckycron.*/d" /etc/crontab
+
+    if [ -d /opt/bulckypi ]; then
+        rm -Rf /opt/bulckypi
+    fi
+
+    rm -Rf /etc/bulckypi/conf_tmp
+fi
+

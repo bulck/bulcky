@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$1" == "purge" ]; then
+    if [ -f /etc/default/bulckycron ]; then
+        rm /etc/default/bulckycron
+    fi
+fi
+
+
