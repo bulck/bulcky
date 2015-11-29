@@ -1,0 +1,16 @@
+/var/log/bulcky/bulckypi.log /var/log/bulcky/bulckypi-service.log {
+    daily
+    rotate 30
+    size 20M
+    missingok
+    create 644 bulcky bulcky
+    compress
+    sharedscripts
+    postrotate
+        chown -R bulcky:bulcky /var/log/bulcky
+        chmod 755 /var/log/bulcky
+        if [ -x /etc/init.d/bulckypi ]; then \
+            invoke-rc.d bulckypi force-reload > /dev/null 2>&1; \
+        fi; \
+    endscript
+}

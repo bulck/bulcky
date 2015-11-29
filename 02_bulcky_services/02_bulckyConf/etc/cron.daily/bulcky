@@ -1,0 +1,215 @@
+#!/bin/bash
+
+function check_package_manager {
+    count=0
+    while [ "`ps ax|grep 'apt-'|grep -v 'grep'`" != "" ] || [ "`ps ax|grep 'dpkg -i'|grep -v 'grep'`" != "" ]; do
+        sleep 3
+        count=`expr $count + 1`
+
+        if [ $count -gt 100 ]; then
+            return 1
+        fi
+    done
+    return 0
+}
+
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        (--now) now=yes;;
+        (--manual) manual=yes;;
+        (*)  break;;
+    esac
+    shift
+done
+
+
+if [ "$manual" != "yes" ]; then
+    exec 2>&1
+    exec > >(logger -t "bulckycron.daily")
+fi
+
+#Random sleep:
+if [ "$now" != "yes" ]; then
+    sleep $[ ( $RANDOM % 3600 )  + 1 ]s
+fi
+
+check_package_manager
+if [ $? -eq 1 ]; then
+    echo "--> Error, a package manager is already running... exiting"
+    exit 1
+fi
+
+
+#If there was an error whith dpkg/apt:
+/usr/bin/dpkg --configure -a --force-confdef --force-confold
+
+echo "--> Updating repositories..."
+apt-get update
+echo "...ok"
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckypi`" != "" ]; then
+    echo "--> Upgrading bulckypi package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckypi
+    echo "...ok"
+elif [ "`dpkg -s bulckypi 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckypi package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckypi 
+    echo "...ok"
+else
+	echo "--> Cultipi package is up-to-date"
+fi
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckyface`" != "" ]; then
+    echo "--> Upgrading bulckyface package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss"bulckyface 
+    rm -Rf /var/cache/lighttpd/compress/*
+    /etc/init.d/lighttpd force-reload
+    echo "...ok"
+elif [ "`dpkg -s bulckyface 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckyface package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckyface 
+    echo "...ok"
+else
+	echo "--> Cultibox package is up-to-date"
+fi
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckyraz`" != "" ]; then
+    echo "--> Upgrading bulckyraz package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyraz
+    echo "...ok"
+elif [ "`dpkg -s bulckyraz 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckyraz package..."
+	sleep 2 
+    apt-get install -y  --force-yes bulckyraz
+    echo "...ok"
+else
+	echo "--> CultiRAZ package is up-to-date"
+fi
+
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckytime`" != "" ]; then
+    echo "--> Upgrading bulckytime package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckytime
+    echo "...ok"
+elif [ "`dpkg -s bulckytime 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckytime package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckytime
+    echo "...ok"
+else
+	echo "--> Cultitime package is up-to-date"
+fi
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckydoc`" != "" ]; then
+    echo "--> Upgrading bulckydoc package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckydoc
+    echo "...ok"
+elif [ "`dpkg -s bulckydoc 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckydoc package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckydoc
+    echo "...ok"
+else
+	echo "--> Cultidoc package is up-to-date"
+fi
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckycam`" != "" ]; then
+    echo "--> Upgrading bulckycam package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckycam
+    echo "...ok"
+elif [ "`dpkg -s bulckycam 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckycam package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckycam
+    echo "...ok"
+else
+	echo "--> Culticam package is up-to-date"
+fi
+
+if [ "`apt-get -u upgrade --assume-no|grep bulckyconf`" != "" ]; then
+    echo "--> Upgrading bulckyconf package..."
+	sleep 2
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyconf
+    echo "...ok"
+elif [ "`dpkg -s bulckyconf 2>/dev/null|grep Version`" == "" ]; then
+    echo "--> Installing bulckyconf package..."
+	sleep 2
+    apt-get install -y  --force-yes bulckyconf
+    echo "...ok"
+else
+	echo "--> Culticonf package is up-to-date"
+fi
+
+
+
+if [ -d /var/www/bulcky/tmp/import ]; then
+    echo "--> Cleaning import directory..."
+    rm -Rf /var/www/bulcky/tmp/import/*
+    echo "...ok"
+else
+    mkdir /var/www/bulcky/tmp/import
+	chown www-data:www-data /var/www/bulcky/tmp/import
+fi
+
+if [ -d /var/www/bulcky/tmp/export ]; then
+    echo "--> Cleaning bulcky directory..."
+    rm -Rf /var/www/bulcky/tmp/export/*
+    echo "...ok"
+else
+	mkdir /var/www/bulcky/tmp/export
+	chown www-data:www-data /var/www/bulcky/tmp/export
+fi
+
+rm -Rf /var/www/bulcky/main/templates_c/*.ser 2>/dev/null
+
+
+if [ -f /etc/bulckyconf/packages ]; then
+    packages="`cat /etc/bulckyconf/packages`"
+    if [ "$packages" != "" ]; then
+        for pack in $packages; do
+            if [ "`dpkg -l $pack 2>/dev/null|grep ii`" == "" ]; then
+                echo "--> Installing package $pack..."
+                sleep 2
+				apt-get install -y --force-yes $pack
+                echo "...ok"
+
+                if [ -f /etc/bulckyconf/postinst/$pack ]; then
+                    echo "--> Executing postinstall script for $pack"
+                    bash /etc/bulckyconf/postinst/$pack
+                    echo "...ok"
+                fi
+            fi
+        done       
+    fi
+fi
+
+
+/sbin/iw reg set FR
+
+echo "--> Cleaning tmp directory..."
+rm -Rf /tmp/*
+echo "...ok"
+	
+if [ ! -f /var/lock/UPGRADE ]; then
+    nohup /bin/bash -c 'sleep 3600 && /etc/cron.daily/bulcky --now' >/dev/null 2>&1 &
+    touch /var/lock/UPGRADE
+else
+    rm -f /var/lock/UPGRADE
+fi
+
+if [ -f /var/lock/REBOOT_NEEDED ]; then
+    echo "--> Rebooting system by lock file..."
+    rm -Rf /var/lock/REBOOT_NEEDED
+    shutdown -r now
+    echo "...ok"
+fi

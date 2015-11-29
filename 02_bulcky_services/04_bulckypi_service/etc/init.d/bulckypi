@@ -1,0 +1,107 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          bulckypi
+# Required-Start:    $all 
+# Required-Stop:     $all 
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start bulckypi daemon at boot time
+# Description:       Enable bulckypi service provided by daemon.
+### END INIT INFO
+
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin" 
+
+DAEMONUSER="bulcky"
+DEAMON_NAME="bulckypi"
+
+. /lib/lsb/init-functions
+
+d_start () {
+    log_daemon_msg "Starting system $DEAMON_NAME service"
+	if [ "`ps ax|grep bulckyPi.tcl|grep tclsh`" != "" ]; then
+        echo -n  "\n[ ok ] $DEAMON_NAME service is already running.\n"
+        exit 0
+    else
+		sudo -u $DAEMONUSER nohup /usr/bin/tclsh "/opt/bulckypi/bulckyPi/bulckyPi.tcl" "/etc/bulckypi" >>/var/log/bulcky/bulckypi-service.log 2>&1 &
+		sleep 4
+		log_end_msg $?
+	fi
+}
+
+d_stop () {
+    log_daemon_msg "Stopping system $DEAMON_NAME Daemon"
+    tclsh /opt/bulckypi/bulckyPi/bulckyPistop.tcl 
+    sleep 1
+    log_end_msg $?
+}
+
+case "$1" in
+
+    start|stop)
+        d_${1}
+        ;;
+
+    restart|reload)
+        d_stop
+
+        for pid in "`ps ax|grep bulckyPi.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+
+        d_start
+        ;;
+    force-reload)
+        d_stop
+        for pid in "`ps ax|grep server |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        for pid in "`ps ax|grep serveur |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        for pid in "`ps ax|grep bulckyPi.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        d_start
+        ;;
+    force-stop)
+        d_stop
+        for pid in "`ps ax|grep server |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        for pid in "`ps ax|grep serveur |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        for pid in "`ps ax|grep bulckyPi.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
+            if [ "$pid" != "" ]; then
+                kill -9 $pid
+            fi
+        done
+        ;;
+    status)
+        if [ "`ps ax|grep bulckyPi.tcl|grep tclsh`" != "" ]; then
+            echo "[ ok ] $DEAMON_NAME service is running..."
+            exit 0
+        else 
+            echo "[ fail ] $DEAMON_NAME service is not running..."
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Usage: /etc/init.d/$DEAMON_NAME {start|stop|force-stop|restart|reload|force-reload|status}"
+        exit 1
+        ;;
+esac
+exit 0

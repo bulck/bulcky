@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<conf>
+    <item name="verbose" level="debug" />
+    <item name="timeBeforeTwoSnapshots" senconds="5" />
+    <item name="dailySnapshotHour"      hour="12" />
+    <item name="dailySnapshotMin"       min="5" />
+    <item name="lock_snapshotFile"      file="/var/lock/bulckycam_snapshot" />
+    <item name="lock_reloadConfFile"    file="/var/lock/bulckycam_reloadConf" />
+    <item name="nbWebcam"               input="4" />
+    <item name="confPathWebcam,0"       value="/etc/bulckycam/webcam0.conf" />
+    <item name="confPathWebcam,1"       value="/etc/bulckycam/webcam1.conf" />
+    <item name="confPathWebcam,2"       value="/etc/bulckycam/webcam2.conf" />
+    <item name="confPathWebcam,3"       value="/etc/bulckycam/webcam3.conf" />
+</conf>

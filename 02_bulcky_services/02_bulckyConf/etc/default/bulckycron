@@ -1,0 +1,186 @@
+exec 2>&1
+exec > >(logger -t "bulckycron.minutly")
+
+
+BULCKYPI_ACTIV="yes"
+BULCKYTIME_ACTIV="yes"
+BULCKYRAZ_ACTIV="yes"
+BULCKYCAM_ACTIV="yes"
+
+
+if [ "$BULCKYPI_ACTIV" == "yes" ]; then
+    /etc/init.d/bulckypi status >/dev/null
+    if [ $? -ne 0 ]; then
+        echo "--> Restarting bulckypi service..."
+        /etc/init.d/bulckypi force-reload >/dev/null 2>&1
+        echo "...ok"
+    fi
+fi
+
+
+if [ "$BULCKYTIME_ACTIV" == "yes" ]; then
+    /etc/init.d/bulckytime status >/dev/null
+    if [ $? -ne 0 ]; then
+        echo "--> Restarting bulckytime service..."
+        /etc/init.d/bulckytime force-reload >/dev/null 2>&1
+        echo "...ok"
+    fi
+fi
+
+
+if [ "$BULCKYRAZ_ACTIV" == "yes" ]; then
+    /etc/init.d/bulckyraz status >/dev/null
+    if [ $? -ne 0 ]; then
+        echo "--> Restarting bulckyraz service..."
+        /etc/init.d/bulckyraz force-reload >/dev/null 2>&1
+        echo "...ok"
+    fi
+fi
+
+if [ "$BULCKYCAM_ACTIV" == "yes" ]; then
+    /etc/init.d/bulckycam status >/dev/null
+    if [ $? -ne 0 ]; then
+        echo "--> Restarting bulckycam service..."
+        /etc/init.d/bulckycam force-reload >/dev/null 2>&1
+        echo "...ok"
+    fi
+fi
+
+
+if [ -f /etc/bulckyconf/reverse_ssh.conf ]; then
+        . /etc/bulckyconf/reverse_ssh.conf
+fi
+
+
+if [ "$BULCKYSSH_ACTIV" == "yes" ]; then
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_SSH|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_SSH" != "" ]; then
+        pid="`ps ax|/bin/grep ssh|/bin/grep ':22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse SSH..."
+            kill -9 $pid
+            echo "...ok"
+        fi
+ 
+        echo "--> Starting reverse SSH..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_SSH:localhost:22 bulcky@$REVERSE_IP
+        echo "...ok"
+    fi
+
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_HTTP|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_HTTP" != "" ]; then
+        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse HTTP..."
+            kill -9 $pid
+            echo "...ok"
+        fi
+
+
+        echo "--> Starting reverse HTTP..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_HTTP:localhost:80 bulcky@$REVERSE_IP -g
+        echo "...ok"
+    fi
+
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_HTTPS|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_HTTPS" != "" ]; then   
+        pid="`ps ax|/bin/grep ssh|/bin/grep '443'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse HTTPS..."
+            kill -9 $pid
+            echo "...ok"
+        fi
+
+        echo "--> Starting reverse HTTPS..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_HTTPS:localhost:443 bulcky@$REVERSE_IP -g
+        echo "...ok"
+    fi
+	
+	if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_WEBCAM|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_WEBCAM" != "" ]; then
+        pid="`ps ax|/bin/grep ssh|/bin/grep ':8081'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse WEBCAM..."
+            kill -9 $pid
+            echo "...ok"
+        fi
+
+
+        echo "--> Starting reverse WEBCAM..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_WEBCAM:localhost:8081 bulcky@$REVERSE_IP -g
+        echo "...ok"
+    fi
+else
+    pid="`ps ax|/bin/grep autossh|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing auto SSH..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+
+    pid="`ps ax|/bin/grep 'ssh -NR'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing remaining SSH..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+fi
+
+# Check aliveness of wlan connection:
+if [ "`/sbin/ifconfig wlan0 2>/dev/null`" != "" ]; then
+    /sbin/iwconfig wlan0 power off
+    
+	#Format of the output of ifconfig can change depending the OS version:
+	ip="`/sbin/ifconfig wlan0 | grep \"inet adr\" | awk -F: '{print $2}' | awk '{print $1}'`"
+	ip_try="`/sbin/ifconfig wlan0 | grep \"inet addr\" | awk -F: '{print $2}' | awk '{print $1}'`"
+	
+    # If no ip address is defined but wlan exists, we have to restart wlan configuration:
+    if [ "$ip" == "" ] && [ "$ip_try" == "" ]; then
+        echo "--> Restarting wlan configuration, wlan not configured..."
+        /sbin/ifdown wlan0
+	sleep 2
+	#/usr/sbin/hub-ctrl -h 0 -P 2 -p 0 ;  pkill -9 wpa_supplicant; sleep 5; /usr/sbin/hub-ctrl  -h 0 -P 2 -p 1
+	#sleep 2
+        /sbin/ifup --force wlan0
+        echo "...ok"
+    else
+        # If ip address is defined, we have to check if we can access the gateway in Managed Mode only:
+        mode="`/sbin/iwconfig wlan0|/bin/grep -i \"Mode:managed\"`"
+        if [ "$mode" != "" ]; then
+            gw="`/sbin/ip route show | grep wlan0 | /bin/grep default | /usr/bin/awk -F\" \" '{print$3}'`"
+            if [ "$gw" != "" ]; then
+                # If we can't access the gateway, we have lost the connection, we have to restart the connection:
+                /bin/ping -c 1 $gw >/dev/null 2>&1
+                if [ $? -ne 0 ]; then
+                    if [ -f /tmp/gw_check ]; then
+                        gw_check="`cat /tmp/gw_check`"
+                    else
+                        gw_check=0
+                    fi
+
+
+                    gw_check=`expr $gw_check + 1`
+                    if [ $gw_check -ge 5 ]; then
+                        echo "--> Restarting wlan configuration, gateway unreachable..."
+                        /sbin/ifdown wlan0
+                        sleep 2
+			#/usr/sbin/hub-ctrl -h 0 -P 2 -p 0 ;  pkill -9 wpa_supplicant; sleep 5; /usr/sbin/hub-ctrl  -h 0 -P 2 -p 1
+			#sleep 2
+                        /sbin/ifup --force wlan0
+                        echo "...ok"
+                    else
+                        echo "$gw_check" > /tmp/gw_check
+                    fi
+                else
+                    if [ -f /tmp/gw_check ]; then
+                        rm /tmp/gw_check
+                    fi
+                fi
+            fi
+        fi
+    fi
+fi
+
+if [ "`ls /var/www/bulcky/main/templates_c/*.ser 2>/dev/null`" != "" ]; then
+    for file in `ls /var/www/bulcky/main/templates_c/*.ser 2>/dev/null`; do
+        if [ "`ls -lh  $file| cut -d \" \" -f5`" == "0" ]; then
+            rm $file
+        fi
+    done
+fi
