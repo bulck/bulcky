@@ -26,17 +26,17 @@ fi
 
 if [ "$2" == "version" ]; then
     if [ "$1" == "bulckypi" ]; then
-        VERSION=`cat ../../../04_CultiPi/01_Software/01_cultiPi/VERSION`
-    elif [ "$1" == "cultibox" ] || [ "$1" == "cultidoc" ]; then
-        VERSION=`head -1 ../../CHANGELOG |sed -r 's#^.*\((.*)\).*$#\1#'`
-    elif [ "$1" == "cultiraz" ]; then
-        VERSION=`cat ../../../04_CultiPi/01_Software/05_cultiRAZ/VERSION`
-    elif [ "$1" == "cultitime" ]; then
-        VERSION=`cat ../../../04_CultiPi/01_Software/07_cultiTime/VERSION`
-    elif [ "$1" == "culticonf" ]; then
-        VERSION=`cat ../../../04_CultiPi/01_Software/02_cultiConf/VERSION`
-    elif [ "$1" == "culticam" ]; then
-        VERSION=`cat ../../../04_CultiPi/01_Software/09_cultiCam/VERSION`
+        VERSION=`cat ../../../02_bulcky_services/01_bulckyPi/VERSION`
+    elif [ "$1" == "bulckyface" ] || [ "$1" == "bulckydoc" ]; then
+        VERSION=`../../02_src/VERSION`
+    elif [ "$1" == "bulckyraz" ]; then
+        VERSION=`cat ../../../02_bulcky_services/05_bulckyRAZ/VERSION`
+    elif [ "$1" == "bulckytime" ]; then
+        VERSION=`cat ../../../02_bulcky_services/07_bulckyTime/VERSION`
+    elif [ "$1" == "bulckyconf" ]; then
+        VERSION=`cat ../../../02_bulcky_services/02_bulckyConf/VERSION`
+    elif [ "$1" == "bulckycam" ]; then
+        VERSION=`cat ../../../02_bulcky_service/09_bulckyCam/VERSION`
     fi
 else
     VERSION=$2
@@ -45,252 +45,251 @@ fi
 
 # Remove git pull when using jenkins
 if [ "$3" == "up" ]; then
-    (cd ../../../ && git pull && cd 01_software/02_src/cultibox/main/cultibox.wiki/ && git pull && cd ../../../../../04_CultiPi/01_Software/01_cultiPi/ && git pull)
+    (cd ../../../ && git pull && cd 01_software/02_src/bulcky/main/bulcky.wiki/ && git pull && cd ../../../02_bulcky_services/01_bulckyPi/ && git pull)
 fi
 
 revision=`date +%y%m%d%H%M`
 
 case "$1" in
-      "cultipi")
+      "bulckypi")
 	   debug="$3"
-           if [ -d ../01_src/01_xampp ]; then
-		       rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+               rm -Rf /tmp/bulcky/*
            fi
-		   mkdir -p ../01_src/01_xampp/cultipi
-           cp -R ./conf-package/DEBIAN-cultipi ../01_src/01_xampp/cultipi/DEBIAN
+           mkdir -p /tmp/bulcky/bulckypi
+           cp -R ./conf-package/DEBIAN-bulckypi /tmp/bulcky/bulckypi/DEBIAN
 
-           mkdir -p ../01_src/01_xampp/cultipi/opt/cultipi
-           mkdir -p ../01_src/01_xampp/cultipi/etc/init.d
-           mkdir -p ../01_src/01_xampp/cultipi/etc/cultipi
+           mkdir -p /tmp/bulcky/bulckypi/opt/bulckypi
+           mkdir -p /tmp/bulcky/bulckypi/etc/init.d
+           mkdir -p /tmp/bulcky/bulckypi/etc/bulckypi
 
-           cp -R ../../../04_CultiPi/01_Software/01_cultiPi/* ../01_src/01_xampp/cultipi/opt/cultipi/
-           rm -f ../01_src/01_xampp/cultipi/opt/cultipi/VERSION
-           cp -R ../../../04_CultiPi/01_Software/01_cultiPi/_conf/01_defaultConf_RPi ../01_src/01_xampp/cultipi/etc/cultipi/
+           cp -R ../../../02_bulcky_services/01_bulckyPi/* /tmp/bulcky/bulckypi/opt/bulckypi/
+           rm -f /tmp/bulcky/bulckypi/opt/bulckypi/VERSION
+           cp -R ../../../02_bulcky_services/01_bulckyPi/_conf/01_defaultConf_RPi /tmp/bulcky/bulckypi/etc/bulckypi/
 
-           cp -R ../../../04_CultiPi/01_Software/01_cultiPi/_conf/01_defaultConf_RPi  ../01_src/01_xampp/cultipi/etc/cultipi/
-           cp -R ../../../04_CultiPi/01_Software/01_cultiPi/_conf/conf.xml  ../01_src/01_xampp/cultipi/etc/cultipi/
+           cp -R ../../../02_bulcky_services/01_bulckyPi/_conf/01_defaultConf_RPi  /tmp/bulcky/bulckypi/etc/bulckypi/
+           cp -R ../../../02_bulcky_services/01_bulckyPi/_conf/conf.xml  /tmp/bulcky/bulckypi/etc/bulckypi/
 
-           cp ../../../04_CultiPi/01_Software/04_cultipi_service/etc/init.d/cultipi ../01_src/01_xampp/cultipi/etc/init.d/cultipi
+           cp ../../../02_bulcky_services/04_bulckypi_service/etc/init.d/bulckypi /tmp/bulcky/bulckypi/etc/init.d/bulckypi
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/cultipi/DEBIAN/control
-           find ./../01_src/01_xampp/cultipi/ -name ".git*"|xargs rm -Rf 
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckypi/DEBIAN/control
+           find /tmp/bulcky/ -name ".git*"|xargs rm -Rf 
 	
 	   if [ "$debug" ==  "true" ]; then
-                        sed -i "3i\set -x" ../01_src/01_xampp/cultipi/DEBIAN/postinst
-                        sed -i "3i\set -x" ../01_src/01_xampp/cultipi/DEBIAN/postrm
-                        sed -i "3i\set -x" ../01_src/01_xampp/cultipi/DEBIAN/preinst
-                        sed -i "3i\set -x" ../01_src/01_xampp/cultipi/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/prerm
            fi
-           cd ./../01_src/01_xampp/ && dpkg-deb --build cultipi
-           
-           mv cultipi.deb ../../05_cultipi/Output/cultipi-armhf_`echo $VERSION`-r`echo $revision`.deb
+           cd /tmp/bulcky/ && dpkg-deb --build bulckypi
+           mv bulckypi.deb /var/lib/jenkins/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "cultibox")
 	   debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/cultibox/var/www
-           cp -R ./conf-package/DEBIAN-cultibox ../01_src/01_xampp/cultibox/DEBIAN
+           mkdir -p /tmp/bulcky/cultibox/var/www
+           cp -R ./conf-package/DEBIAN-cultibox /tmp/bulcky/cultibox/DEBIAN
 
-           cp -R ../../02_src/cultibox ../01_src/01_xampp/cultibox/var/www/cultibox
-		   cp -R ../../02_src/mobile ../01_src/01_xampp/cultibox/var/www/mobile
-           rm -Rf ../01_src/01_xampp/cultibox/var/www/cultibox/main/cultibox.wiki
-           cat ../../CHANGELOG > ../01_src/01_xampp/cultibox/var/www/cultibox/VERSION.txt
+           cp -R ../../02_src/cultibox /tmp/bulcky/cultibox/var/www/cultibox
+		   cp -R ../../02_src/mobile /tmp/bulcky/cultibox/var/www/mobile
+           rm -Rf /tmp/bulcky/cultibox/var/www/cultibox/main/cultibox.wiki
+           cat ../../CHANGELOG > /tmp/bulcky/cultibox/var/www/cultibox/VERSION.txt
 
-           cp conf-package/lgpl3.txt ../01_src/01_xampp/cultibox/var/www/cultibox/LICENSE
-           mkdir -p ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install
-           cp ../../01_install/01_src/02_sql/cultibox_* ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/fake_log.sql ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/user_cultibox.sql ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/update_sql.sql ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/
+           cp conf-package/lgpl3.txt /tmp/bulcky/cultibox/var/www/cultibox/LICENSE
+           mkdir -p /tmp/bulcky/cultibox/var/www/cultibox/sql_install
+           cp ../../01_install/01_src/02_sql/cultibox_* /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
+           cp ../../01_install/01_src/02_sql/fake_log.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
+           cp ../../01_install/01_src/02_sql/user_cultibox.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
+           cp ../../01_install/01_src/02_sql/update_sql.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
 
-           cat > ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/my-extra.cnf << "EOF" 
+           cat > /tmp/bulcky/cultibox/var/www/cultibox/sql_install/my-extra.cnf << "EOF" 
 [client]
 user="root"
 password="cultibox"
 EOF
-           sed -i "s/\`VERSION\` = '.*/\`VERSION\` = '`echo $VERSION`-r`echo $revision`' WHERE \`configuration\`.\`id\` =1;/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/update_sql.sql
-           cp -R ../../01_install/01_src/03_sd/* ../01_src/01_xampp/cultibox/var/www/cultibox/tmp/
+           sed -i "s/\`VERSION\` = '.*/\`VERSION\` = '`echo $VERSION`-r`echo $revision`' WHERE \`configuration\`.\`id\` =1;/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/update_sql.sql
+           cp -R ../../01_install/01_src/03_sd/* /tmp/bulcky/cultibox/var/www/cultibox/tmp/
 
            #replacement of the old version number by the new one in VERSION file
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/cultibox_fr.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/cultibox_en.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/cultibox_de.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/cultibox_it.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/sql_install/cultibox_es.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_fr.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_en.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_de.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_it.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_es.sql
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/cultibox/DEBIAN/control
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" ../01_src/01_xampp/cultibox/var/www/cultibox/main/libs/lib_configuration.php
-           sed -i "s/^$GLOBALS.*\"cultibox\"/\$GLOBALS['MODE']=\"cultipi\"/g" ../01_src/01_xampp/cultibox/var/www/cultibox/main/libs/config.php 
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultibox/DEBIAN/control
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/main/libs/lib_configuration.php
+           sed -i "s/^$GLOBALS.*\"cultibox\"/\$GLOBALS['MODE']=\"cultipi\"/g" /tmp/bulcky/cultibox/var/www/cultibox/main/libs/config.php 
 
-           find ./../01_src/01_xampp/cultibox/ -name ".git*"|xargs rm -Rf
+           find .//tmp/bulcky/cultibox/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/cultibox/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultibox/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/cultibox/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultibox/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build cultibox
+           cd .//tmp/bulcky/ && dpkg-deb --build cultibox
 
            mv cultibox.deb ../../05_cultipi/Output/cultibox-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;  
       "cultiraz")
 	   debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/cultiraz
-           cp -R ./conf-package/DEBIAN-cultiraz ../01_src/01_xampp/cultiraz/DEBIAN
+           mkdir -p /tmp/bulcky/cultiraz
+           cp -R ./conf-package/DEBIAN-cultiraz /tmp/bulcky/cultiraz/DEBIAN
 
-           mkdir -p ../01_src/01_xampp/cultiraz/opt/cultiraz
-           mkdir -p ../01_src/01_xampp/cultiraz/etc/init.d
+           mkdir -p /tmp/bulcky/cultiraz/opt/cultiraz
+           mkdir -p /tmp/bulcky/cultiraz/etc/init.d
 
-           cp -R ../../../04_CultiPi/01_Software/05_cultiRAZ/* ../01_src/01_xampp/cultiraz/opt/cultiraz/
-           rm -f ../01_src/01_xampp/cultiraz/opt/cultiraz/VERSION
+           cp -R ../../../04_CultiPi/01_Software/05_cultiRAZ/* /tmp/bulcky/cultiraz/opt/cultiraz/
+           rm -f /tmp/bulcky/cultiraz/opt/cultiraz/VERSION
 
-           cp ../../../04_CultiPi/01_Software/06_cultiRAZ_service/etc/init.d/cultiraz ../01_src/01_xampp/cultiraz/etc/init.d/cultiraz
+           cp ../../../04_CultiPi/01_Software/06_cultiRAZ_service/etc/init.d/cultiraz /tmp/bulcky/cultiraz/etc/init.d/cultiraz
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/cultiraz/DEBIAN/control
-           find ./../01_src/01_xampp/cultiraz/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultiraz/DEBIAN/control
+           find .//tmp/bulcky/cultiraz/ -name ".git*"|xargs rm -Rf
 	
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/cultiraz/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultiraz/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/cultiraz/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultiraz/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build cultiraz
+           cd .//tmp/bulcky/ && dpkg-deb --build cultiraz
            mv cultiraz.deb ../../05_cultipi/Output/cultiraz-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "cultitime")
 	   debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/cultitime
-           cp -R ./conf-package/DEBIAN-cultitime ../01_src/01_xampp/cultitime/DEBIAN
+           mkdir -p /tmp/bulcky/cultitime
+           cp -R ./conf-package/DEBIAN-cultitime /tmp/bulcky/cultitime/DEBIAN
 
-           mkdir -p ../01_src/01_xampp/cultitime/opt/cultitime
-           mkdir -p ../01_src/01_xampp/cultitime/etc/init.d
+           mkdir -p /tmp/bulcky/cultitime/opt/cultitime
+           mkdir -p /tmp/bulcky/cultitime/etc/init.d
 
-           cp -R ../../../04_CultiPi/01_Software/07_cultiTime/* ../01_src/01_xampp/cultitime/opt/cultitime/
-           rm -f ../01_src/01_xampp/cultitime/opt/cultitime/VERSION
+           cp -R ../../../04_CultiPi/01_Software/07_cultiTime/* /tmp/bulcky/cultitime/opt/cultitime/
+           rm -f /tmp/bulcky/cultitime/opt/cultitime/VERSION
 
-           cp ../../../04_CultiPi/01_Software/08_cultiTime_service/etc/init.d/cultitime ../01_src/01_xampp/cultitime/etc/init.d/cultitime
+           cp ../../../04_CultiPi/01_Software/08_cultiTime_service/etc/init.d/cultitime /tmp/bulcky/cultitime/etc/init.d/cultitime
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/cultitime/DEBIAN/control
-           find ./../01_src/01_xampp/cultitime/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultitime/DEBIAN/control
+           find .//tmp/bulcky/cultitime/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/cultitime/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultitime/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/cultitime/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultitime/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build cultitime
+           cd .//tmp/bulcky/ && dpkg-deb --build cultitime
 
            mv cultitime.deb ../../05_cultipi/Output/cultitime-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "culticonf")
 	   debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/culticonf
-           mkdir -p ../01_src/01_xampp/culticonf/etc/cron.daily
-           mkdir -p ../01_src/01_xampp/culticonf/etc/cron.hourly
-           mkdir -p ../01_src/01_xampp/culticonf/etc/logrotate.d
-           mkdir -p ../01_src/01_xampp/culticonf/etc/default
-           mkdir -p ../01_src/01_xampp/culticonf/etc/culticonf
-           mkdir -p ../01_src/01_xampp/culticonf/root
-           mkdir -p ../01_src/01_xampp/culticonf/home/cultipi
+           mkdir -p /tmp/bulcky/culticonf
+           mkdir -p /tmp/bulcky/culticonf/etc/cron.daily
+           mkdir -p /tmp/bulcky/culticonf/etc/cron.hourly
+           mkdir -p /tmp/bulcky/culticonf/etc/logrotate.d
+           mkdir -p /tmp/bulcky/culticonf/etc/default
+           mkdir -p /tmp/bulcky/culticonf/etc/culticonf
+           mkdir -p /tmp/bulcky/culticonf/root
+           mkdir -p /tmp/bulcky/culticonf/home/cultipi
 
-           cp -R ./conf-package/DEBIAN-culticonf ../01_src/01_xampp/culticonf/DEBIAN
-           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/usr ../01_src/01_xampp/culticonf/
+           cp -R ./conf-package/DEBIAN-culticonf /tmp/bulcky/culticonf/DEBIAN
+           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/usr /tmp/bulcky/culticonf/
 
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/logrotate.d/cultipi ../01_src/01_xampp/culticonf/etc/logrotate.d/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.daily/cultipi ../01_src/01_xampp/culticonf/etc/cron.daily/ 
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.hourly/cultipi ../01_src/01_xampp/culticonf/etc/cron.hourly/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/default/culticron ../01_src/01_xampp/culticonf/etc/default/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/root/.bash_aliases ../01_src/01_xampp/culticonf/root/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/home/cultipi/.bash_aliases ../01_src/01_xampp/culticonf/home/cultipi/
-           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/etc/culticonf/* ../01_src/01_xampp/culticonf/etc/culticonf/
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/logrotate.d/cultipi /tmp/bulcky/culticonf/etc/logrotate.d/
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.daily/cultipi /tmp/bulcky/culticonf/etc/cron.daily/ 
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.hourly/cultipi /tmp/bulcky/culticonf/etc/cron.hourly/
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/default/culticron /tmp/bulcky/culticonf/etc/default/
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/root/.bash_aliases /tmp/bulcky/culticonf/root/
+           cp ../../../04_CultiPi/01_Software/02_cultiConf/home/cultipi/.bash_aliases /tmp/bulcky/culticonf/home/cultipi/
+           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/etc/culticonf/* /tmp/bulcky/culticonf/etc/culticonf/
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/culticonf/DEBIAN/control
-           find ./../01_src/01_xampp/culticonf/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/culticonf/DEBIAN/control
+           find .//tmp/bulcky/culticonf/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/culticonf/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/culticonf/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/culticonf/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/culticonf/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build culticonf
+           cd .//tmp/bulcky/ && dpkg-deb --build culticonf
 
            mv culticonf.deb ../../05_cultipi/Output/culticonf-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "cultidoc")
 	   debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/cultidoc
-           mkdir -p ../01_src/01_xampp/cultidoc/var/www/cultibox/main
+           mkdir -p /tmp/bulcky/cultidoc
+           mkdir -p /tmp/bulcky/cultidoc/var/www/cultibox/main
 
-           cp -R ./conf-package/DEBIAN-cultidoc ../01_src/01_xampp/cultidoc/DEBIAN
-           cp -R ../../02_src/cultibox/main/cultibox.wiki ../01_src/01_xampp/cultidoc/var/www/cultibox/main/
+           cp -R ./conf-package/DEBIAN-cultidoc /tmp/bulcky/cultidoc/DEBIAN
+           cp -R ../../02_src/cultibox/main/cultibox.wiki /tmp/bulcky/cultidoc/var/www/cultibox/main/
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/cultidoc/DEBIAN/control
-           find ./../01_src/01_xampp/cultidoc/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultidoc/DEBIAN/control
+           find .//tmp/bulcky/cultidoc/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/cultidoc/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultidoc/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/cultidoc/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/cultidoc/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build cultidoc
+           cd .//tmp/bulcky/ && dpkg-deb --build cultidoc
 
            mv cultidoc.deb ../../05_cultipi/Output/cultidoc-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "culticam")
 	  debug="$3"
 
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p ../01_src/01_xampp/culticam
-           cp -R ./conf-package/DEBIAN-culticam ../01_src/01_xampp/culticam/DEBIAN
+           mkdir -p /tmp/bulcky/culticam
+           cp -R ./conf-package/DEBIAN-culticam /tmp/bulcky/culticam/DEBIAN
 
-           mkdir -p ../01_src/01_xampp/culticam/opt/culticam
+           mkdir -p /tmp/bulcky/culticam/opt/culticam
 
-           cp -R ../../../04_CultiPi/01_Software/09_cultiCam/* ../01_src/01_xampp/culticam/opt/culticam/
-           rm -f ../01_src/01_xampp/culticam/opt/culticam/VERSION
-           cp -R ../../../04_CultiPi/01_Software/10_cultiCam_service/* ../01_src/01_xampp/culticam/
+           cp -R ../../../04_CultiPi/01_Software/09_cultiCam/* /tmp/bulcky/culticam/opt/culticam/
+           rm -f /tmp/bulcky/culticam/opt/culticam/VERSION
+           cp -R ../../../04_CultiPi/01_Software/10_cultiCam_service/* /tmp/bulcky/culticam/
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" ../01_src/01_xampp/culticam/DEBIAN/control
-           find ./../01_src/01_xampp/culticam/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/culticam/DEBIAN/control
+           find .//tmp/bulcky/culticam/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" ../01_src/01_xampp/culticam/DEBIAN/postinst
-                sed -i "3i\set -x" ../01_src/01_xampp/culticam/DEBIAN/postrm
-                sed -i "3i\set -x" ../01_src/01_xampp/culticam/DEBIAN/preinst
-                sed -i "3i\set -x" ../01_src/01_xampp/culticam/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/prerm
            fi
 
-           cd ./../01_src/01_xampp/ && dpkg-deb --build culticam
+           cd .//tmp/bulcky/ && dpkg-deb --build culticam
 
            mv culticam.deb ../../05_cultipi/Output/culticam-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
@@ -322,8 +321,8 @@ EOF
            rm binary/culti*.deb
       ;;
       "clean")
-           if [ -d ../01_src/01_xampp ]; then
-            rm -Rf ../01_src/01_xampp/*
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
            fi
       ;;
       *)
