@@ -107,7 +107,6 @@ case "$1" in
 user="root"
 password="bulcky"
 EOF
-           sed -i "s/\`VERSION\` = '.*/\`VERSION\` = '`echo $VERSION`-r`echo $revision`' WHERE \`configuration\`.\`id\` =1;/" /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/update_sql.sql
 
            #replacement of the old version number by the new one in VERSION file
            sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/bulcky_fr.sql
