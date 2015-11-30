@@ -45,10 +45,6 @@ if [  "`cat /etc/sudoers|grep www-data|grep dnsmasq`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /etc/init.d/dnsmasq" >> /etc/sudoers
 fi
 
-if [  "`cat /etc/sudoers|grep www-data|grep iptables`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /sbin/iptables" >> /etc/sudoers
-fi
-
 if [  "`cat /etc/sudoers|grep www-data|grep ntp`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /etc/init.d/ntp" >> /etc/sudoers
 fi
@@ -57,16 +53,8 @@ if [  "`cat /etc/sudoers|grep www-data|grep date`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /bin/date" >> /etc/sudoers
 fi
 
-if [  "`cat /etc/sudoers|grep www-data|grep rc.local`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /etc/rc.local" >> /etc/sudoers
-fi
-
-if [  "`cat /etc/sudoers|grep www-data|grep modprobe`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /sbin/modprobe" >> /etc/sudoers
-fi
-
-if [ "`cat /etc/sudoers|grep bulcky|grep www-data`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /etc/init.d/bulcky" >> /etc/sudoers
+if [ "`cat /etc/sudoers|grep bulckypi|grep www-data`" == "" ]; then
+    echo "www-data ALL = (root) NOPASSWD: /etc/init.d/bulckypi" >> /etc/sudoers
 fi
 
 if [ "`cat /etc/sudoers|grep chown|grep www-data`" == "" ]; then
@@ -97,16 +85,8 @@ if [  "`cat /etc/sudoers|grep www-data|grep hwclock`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /sbin/hwclock" >> /etc/sudoers
 fi
 
-if [  "`cat /etc/sudoers|grep www-data|grep hub-ctrl`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /usr/sbin/hub-ctrl" >> /etc/sudoers
-fi
-
 if [  "`cat /etc/sudoers|grep www-data|grep iwlist`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /sbin/iwlist" >> /etc/sudoers
-fi
-
-if [  "`cat /etc/sudoers|grep www-data|grep pkill`" == "" ]; then
-    echo "www-data ALL = (root) NOPASSWD: /usr/bin/pkill" >> /etc/sudoers
 fi
 
 if [ ! -f /tmp/bulcky_upgrade ]; then
@@ -119,7 +99,7 @@ if [ ! -f /tmp/bulcky_upgrade ]; then
 else 
     echo "  * Upgrading the Bulcky databases, this may take several minutes, please be patient..."
     if [ -f /var/www/bulcky/sql_install/update_sql.sql ]; then
-        /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf --force -h 127.0.0.1 --port=3891 < /var/www/bulky/sql_install/update_sql.sql 2>/dev/null
+        /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf --force -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/update_sql.sql 2>/dev/null
     fi
 
     rm -f /tmp/bulcky_upgrade

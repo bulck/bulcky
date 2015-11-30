@@ -82,7 +82,7 @@ case "$1" in
                 sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/prerm
            fi
            cd /tmp/bulcky/ && dpkg-deb --build bulckypi
-           mv bulckypi.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckypi.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "bulckyface")
 	       debug="$3"
@@ -125,7 +125,7 @@ EOF
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckyface
 
-           mv bulckyface.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyface-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckyface.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckyface-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;  
       "bulckyraz")
 	       debug="$3"
@@ -156,7 +156,7 @@ EOF
            fi
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckyraz
-           mv bulckyraz.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyraz-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckyraz.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckyraz-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "bulckytime")
 	   debug="$3"
@@ -187,7 +187,7 @@ EOF
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckytime
 
-           mv bulckytime.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckytime-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckytime.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckytime-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "bulckyconf")
 	   debug="$3"
@@ -227,7 +227,7 @@ EOF
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckyconf
 
-           mv bulckyconf.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyconf-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckyconf.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckyconf-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "bulckydoc")
 	   debug="$3"
@@ -253,7 +253,7 @@ EOF
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckydoc
 
-           mv bulckydoc.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckydoc-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckydoc.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckydoc-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "bulckycam")
 	       debug="$3"
@@ -283,7 +283,7 @@ EOF
 
            cd /tmp/bulcky/ && dpkg-deb --build bulckycam
 
-           mv bulckycam.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckycam-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckycam.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckycam-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "apt-gen")
            bulckypi="`ls -t Output/bulckypi*|head -1`"
