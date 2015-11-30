@@ -82,7 +82,7 @@ case "$1" in
                 sed -i "3i\set -x" /tmp/bulcky/bulckypi/DEBIAN/prerm
            fi
            cd /tmp/bulcky/ && dpkg-deb --build bulckypi
-           mv bulckypi.deb /var/lib/jenkins/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckypi.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "cultibox")
 	   debug="$3"
