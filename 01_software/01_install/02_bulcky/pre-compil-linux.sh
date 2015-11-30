@@ -289,7 +289,7 @@ EOF
            bulckypi="`ls -t Output/bulckypi*|head -1`"
            cp $bulckypi repository/binary/
           
-           bulckyface="`ls -t Output/*|head -1`"
+           bulckyface="`ls -t Output/bulckyface*|head -1`"
            cp $bulckyface repository/binary/
 
            bulckyraz="`ls -t Output/bulckyraz*|head -1`"
