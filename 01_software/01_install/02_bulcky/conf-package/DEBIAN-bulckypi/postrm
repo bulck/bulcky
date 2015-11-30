@@ -43,10 +43,6 @@ if [ "$1" == "purge" ]; then
         rm -Rf /etc/init.d/bulckypi
     fi
 
-    if [ -d /var/log/bulckypi ]; then
-        rm -Rf /var/log/bulckypi
-    fi
-
     if [ -f /etc/default/bulckycron ]; then
         rm /etc/default/bulckycron
     fi

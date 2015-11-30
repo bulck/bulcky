@@ -31,11 +31,11 @@ fi
 
 
 chown -R www-data:www-data /etc/bulckypi/conf_tmp
-chown -R bulcky:bulcky /var/log/bulckypi
+chown -R bulcky:bulcky /var/log/bulcky
 chown -R bulcky:bulcky /opt/bulckypi
 chown bulcky:bulcky /etc/init.d/bulckypi
 chmod 744 /etc/init.d/bulckypi
-chmod 755 /var/log/bulckypi
+chmod 755 /var/log/bulcky
 
 find /etc/bulckypi/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
 
