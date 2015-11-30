@@ -48,7 +48,7 @@ proc firstLoop {} {
             # La boucle est rappelé toutes les 50ms
             # 3000 / 50 --> 60
             if {$::compteur > 60} {        
-                puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : RAZ usine du Cultipi demandée"
+                puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : RAZ usine du Bulcky demandée"
                
                 # On fait clignoter la LED 10 fois
                 for {set i 0} {$i < 11} {incr i} {
@@ -65,7 +65,15 @@ proc firstLoop {} {
                 resetConf
                 vwait endReset  
                 set endReset 0
-                        
+
+                # On fait clignoter la LED 10 fois
+                for {set i 0} {$i < 11} {incr i} {
+                    exec gpio -g write 22 0
+                    after 200
+                    exec gpio -g write 22 1
+                    after 200
+                    update
+                }
 
                 # On rappel la procédure au bout de 10 secondes pour éviter un double effacage:
                 after 10000 firstLoop
@@ -104,7 +112,7 @@ proc checkAndUpdate {} {
         exec gpio -g write 22 0
        
         if {$::compteur > 40} {
-            puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : RAZ de la configuration du Cultipi demandée"
+            puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : RAZ de la configuration du Bulcky demandée"
            
             # On fait clignoter la LED 5 fois
             for {set i 0} {$i < 6} {incr i} {
@@ -116,7 +124,7 @@ proc checkAndUpdate {} {
             }
          
             set ::compteur 0  
-	    resetConf
+	        resetConf
 
             # On rappel la procédure au bout de 10 secondes pour éviter un double effacage:
             after 10000 checkAndUpdate
@@ -160,7 +168,12 @@ proc resetConf {} {
     if {$RC != 0} {puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : Erreur lors du RAZ du mot de passe lighttpd : $msg"}
 
 
-    # On fait clignoter la LED 5 fois 
+    #On redémare le réseau:
+    set RC [catch {
+        exec /usr/sbin/service networking restart
+    } msg]
+
+     # On fait clignoter la LED 5 fois 
     for {set i 0} {$i < 6} {incr i} {
        exec gpio -g write 22 0
        after 200
@@ -168,18 +181,12 @@ proc resetConf {} {
        after 200
        update
     }
-
-    #On redémare le bulcky:
-    set RC [catch {
-        exec /sbin/shutdown -r now
-    } msg]
     set endReset 1
 }
     
 
 proc resetPackages {} {
     #RAZ des packages:
-
     set RC [catch {
        #Purge all packages except bulckyRAZ
        exec dpkg --purge bulckyface bulckytime bulckyconf bulckycam bulckydoc bulckypi
@@ -201,11 +208,11 @@ proc resetPackages {} {
 #================================#
 
 
-puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : Vérification de la remise en état usine du Cultipi"
+puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : Vérification de la remise en état usine du Bulcky"
 firstLoop
 vwait firstLoopFinish
 
-puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : Vérification de l'effacement de la configuration du Cultipi"
+puts  "[clock format [clock seconds] -format "%b %d %H:%M:%S"] : bulckyRAZ : Vérification de l'effacement de la configuration du Bulcky"
 
 # Procédure utilisée pour vérifier l'état de la pin et faire les MAJ si nécéssaire:
 checkAndUpdate
