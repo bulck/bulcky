@@ -113,7 +113,6 @@ EOF
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyface/DEBIAN/control
            sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/main/libs/lib_configuration.php
-           sed -i "s/^$GLOBALS.*\"cultibox\"/\$GLOBALS['MODE']=\"cultipi\"/g" /tmp/bulcky/bulckyface/var/www/bulcky/main/libs/config.php 
 
            find /tmp/bulcky/bulckyface/ -name ".git*"|xargs rm -Rf
 
@@ -128,188 +127,190 @@ EOF
 
            mv bulckyface.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyface-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;  
-      "cultiraz")
-	   debug="$3"
+      "bulckyraz")
+	       debug="$3"
 
            if [ -d /tmp/bulcky ]; then
-            rm -Rf /tmp/bulcky/*
+               rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/cultiraz
-           cp -R ./conf-package/DEBIAN-cultiraz /tmp/bulcky/cultiraz/DEBIAN
 
-           mkdir -p /tmp/bulcky/cultiraz/opt/cultiraz
-           mkdir -p /tmp/bulcky/cultiraz/etc/init.d
+           mkdir -p /tmp/bulcky/bulckyraz
+           cp -R ./conf-package/DEBIAN-bulckyraz /tmp/bulcky/bulckyraz/DEBIAN
 
-           cp -R ../../../04_CultiPi/01_Software/05_cultiRAZ/* /tmp/bulcky/cultiraz/opt/cultiraz/
-           rm -f /tmp/bulcky/cultiraz/opt/cultiraz/VERSION
+           mkdir -p /tmp/bulcky/bulckyraz/opt/bulckyraz
+           mkdir -p /tmp/bulcky/bulckyraz/etc/init.d
 
-           cp ../../../04_CultiPi/01_Software/06_cultiRAZ_service/etc/init.d/cultiraz /tmp/bulcky/cultiraz/etc/init.d/cultiraz
+           cp -R ../../../02_bulcky_services/05_bulckyRAZ/* /tmp/bulcky/bulckyraz/opt/bulckyraz/
+           rm -f /tmp/bulcky/bulckyraz/opt/bulckyraz/VERSION
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultiraz/DEBIAN/control
-           find .//tmp/bulcky/cultiraz/ -name ".git*"|xargs rm -Rf
+           cp ../../../02_bulcky_services/06_bulckyRAZ_service/etc/init.d/bulckyraz /tmp/bulcky/bulckyraz/etc/init.d/bulckyraz
+
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyraz/DEBIAN/control
+           find /tmp/bulcky/bulckyraz/ -name ".git*"|xargs rm -Rf
 	
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/cultiraz/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyraz/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyraz/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyraz/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyraz/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build cultiraz
-           mv cultiraz.deb ../../05_cultipi/Output/cultiraz-armhf_`echo $VERSION`-r`echo $revision`.deb
+           cd /tmp/bulcky/ && dpkg-deb --build bulckyraz
+           mv bulckyraz.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyraz-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
-      "cultitime")
+      "bulckytime")
 	   debug="$3"
 
            if [ -d /tmp/bulcky ]; then
             rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/cultitime
-           cp -R ./conf-package/DEBIAN-cultitime /tmp/bulcky/cultitime/DEBIAN
+           mkdir -p /tmp/bulcky/bulckytime
+           cp -R ./conf-package/DEBIAN-bulckytime /tmp/bulcky/bulckytime/DEBIAN
 
-           mkdir -p /tmp/bulcky/cultitime/opt/cultitime
-           mkdir -p /tmp/bulcky/cultitime/etc/init.d
+           mkdir -p /tmp/bulcky/bulckytime/opt/bulckytime
+           mkdir -p /tmp/bulcky/bulckytime/etc/init.d
 
-           cp -R ../../../04_CultiPi/01_Software/07_cultiTime/* /tmp/bulcky/cultitime/opt/cultitime/
-           rm -f /tmp/bulcky/cultitime/opt/cultitime/VERSION
+           cp -R ../../../02_bulcky_services/07_bulckyTime/* /tmp/bulcky/bulckytime/opt/bulckytime/
+           rm -f /tmp/bulcky/bulckytime/opt/bulckytime/VERSION
 
-           cp ../../../04_CultiPi/01_Software/08_cultiTime_service/etc/init.d/cultitime /tmp/bulcky/cultitime/etc/init.d/cultitime
+           cp ../../../02_bulcky_services/08_bulckyTime_service/etc/init.d/bulckytime /tmp/bulcky/bulckytime/etc/init.d/bulckytime
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultitime/DEBIAN/control
-           find .//tmp/bulcky/cultitime/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckytime/DEBIAN/control
+           find /tmp/bulcky/bulckytime/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/cultitime/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckytime/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckytime/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckytime/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckytime/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build cultitime
+           cd /tmp/bulcky/ && dpkg-deb --build bulckytime
 
-           mv cultitime.deb ../../05_cultipi/Output/cultitime-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckytime.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckytime-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
-      "culticonf")
+      "bulckyconf")
 	   debug="$3"
 
            if [ -d /tmp/bulcky ]; then
             rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/culticonf
-           mkdir -p /tmp/bulcky/culticonf/etc/cron.daily
-           mkdir -p /tmp/bulcky/culticonf/etc/cron.hourly
-           mkdir -p /tmp/bulcky/culticonf/etc/logrotate.d
-           mkdir -p /tmp/bulcky/culticonf/etc/default
-           mkdir -p /tmp/bulcky/culticonf/etc/culticonf
-           mkdir -p /tmp/bulcky/culticonf/root
-           mkdir -p /tmp/bulcky/culticonf/home/cultipi
+           mkdir -p /tmp/bulcky/bulckyconf
+           mkdir -p /tmp/bulcky/bulckyconf/etc/cron.daily
+           mkdir -p /tmp/bulcky/bulckyconf/etc/cron.hourly
+           mkdir -p /tmp/bulcky/bulckyconf/etc/logrotate.d
+           mkdir -p /tmp/bulcky/bulckyconf/etc/default
+           mkdir -p /tmp/bulcky/bulckyconf/etc/bulckyconf
+           mkdir -p /tmp/bulcky/bulckyconf/root
+           mkdir -p /tmp/bulcky/bulckyconf/home/bulcky
 
-           cp -R ./conf-package/DEBIAN-culticonf /tmp/bulcky/culticonf/DEBIAN
-           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/usr /tmp/bulcky/culticonf/
+           cp -R ./conf-package/DEBIAN-bulckyconf /tmp/bulcky/bulckyconf/DEBIAN
+           cp -R ../../../02_bulcky_services/02_bulckyConf/usr /tmp/bulcky/bulckyconf/
 
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/logrotate.d/cultipi /tmp/bulcky/culticonf/etc/logrotate.d/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.daily/cultipi /tmp/bulcky/culticonf/etc/cron.daily/ 
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/cron.hourly/cultipi /tmp/bulcky/culticonf/etc/cron.hourly/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/etc/default/culticron /tmp/bulcky/culticonf/etc/default/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/root/.bash_aliases /tmp/bulcky/culticonf/root/
-           cp ../../../04_CultiPi/01_Software/02_cultiConf/home/cultipi/.bash_aliases /tmp/bulcky/culticonf/home/cultipi/
-           cp -R ../../../04_CultiPi/01_Software/02_cultiConf/etc/culticonf/* /tmp/bulcky/culticonf/etc/culticonf/
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/logrotate.d/bulckypi /tmp/bulcky/bulckyconf/etc/logrotate.d/
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.daily/bulckypi /tmp/bulcky/bulckyconf/etc/cron.daily/ 
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.hourly/bulckypi /tmp/bulcky/bulckyconf/etc/cron.hourly/
+           cp ../../../04_CultiPi/01_Software/02_bulckyConf/etc/default/bulckycron /tmp/bulcky/bulckyconf/etc/default/
+           cp ../../../04_CultiPi/01_Software/02_bulckyConf/root/.bash_aliases /tmp/bulcky/bulckyconf/root/
+           cp ../../../04_CultiPi/01_Software/02_bulckyConf/home/bulcky/.bash_aliases /tmp/bulcky/bulckyconf/home/bulcky/
+           cp -R ../../../02_bulcky_services/02_bulckyConf/etc/bulckyconf/* /tmp/bulcky/bulckyconf/etc/bulckyconf/
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/culticonf/DEBIAN/control
-           find .//tmp/bulcky/culticonf/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyconf/DEBIAN/control
+           find /tmp/bulcky/bulckyconf/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/culticonf/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyconf/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyconf/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyconf/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyconf/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build culticonf
+           cd /tmp/bulcky/ && dpkg-deb --build bulckyconf
 
-           mv culticonf.deb ../../05_cultipi/Output/culticonf-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckyconf.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyconf-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
-      "cultidoc")
+      "bulckydoc")
 	   debug="$3"
 
            if [ -d /tmp/bulcky ]; then
             rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/cultidoc
-           mkdir -p /tmp/bulcky/cultidoc/var/www/cultibox/main
+           mkdir -p /tmp/bulcky/bulckydoc
+           mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main
 
-           cp -R ./conf-package/DEBIAN-cultidoc /tmp/bulcky/cultidoc/DEBIAN
-           cp -R ../../02_src/cultibox/main/cultibox.wiki /tmp/bulcky/cultidoc/var/www/cultibox/main/
+           cp -R ./conf-package/DEBIAN-bulckydoc /tmp/bulcky/bulckydoc/DEBIAN
+           cp -R ../02_src/bulcky/main/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultidoc/DEBIAN/control
-           find .//tmp/bulcky/cultidoc/ -name ".git*"|xargs rm -Rf
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckydoc/DEBIAN/control
+           find /tmp/bulcky/bulckydoc/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/cultidoc/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckydoc/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckydoc/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckydoc/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckydoc/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build cultidoc
+           cd /tmp/bulcky/ && dpkg-deb --build bulckydoc
 
-           mv cultidoc.deb ../../05_cultipi/Output/cultidoc-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckydoc.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckydoc-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
-      "culticam")
-	  debug="$3"
+      "bulckycam")
+	       debug="$3"
 
            if [ -d /tmp/bulcky ]; then
             rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/culticam
-           cp -R ./conf-package/DEBIAN-culticam /tmp/bulcky/culticam/DEBIAN
 
-           mkdir -p /tmp/bulcky/culticam/opt/culticam
+           mkdir -p /tmp/bulcky/bulckycam
+           cp -R ./conf-package/DEBIAN-bulckycam /tmp/bulcky/bulckycam/DEBIAN
 
-           cp -R ../../../04_CultiPi/01_Software/09_cultiCam/* /tmp/bulcky/culticam/opt/culticam/
-           rm -f /tmp/bulcky/culticam/opt/culticam/VERSION
-           cp -R ../../../04_CultiPi/01_Software/10_cultiCam_service/* /tmp/bulcky/culticam/
+           mkdir -p /tmp/bulcky/bulckycam/opt/bulckycam
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/culticam/DEBIAN/control
-           find .//tmp/bulcky/culticam/ -name ".git*"|xargs rm -Rf
+           cp -R ../../../02_bulcky_services/09_bulckyCam/* /tmp/bulcky/bulckycam/opt/bulckycam/
+           rm -f /tmp/bulcky/bulckycam/opt/bulckycam/VERSION
+           cp -R ../../../02_bulcky_services/10_bulckyCam_service/* /tmp/bulcky/bulckycam/
+
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckycam/DEBIAN/control
+           find /tmp/bulcky/bulckycam/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/culticam/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckycam/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckycam/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckycam/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckycam/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build culticam
+           cd /tmp/bulcky/ && dpkg-deb --build bulckycam
 
-           mv culticam.deb ../../05_cultipi/Output/culticam-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckycam.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckycam-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
       "apt-gen")
-           cultipi="`ls -t Output/cultipi*|head -1`"
-           cp $cultipi repository/binary/
+           bulckypi="`ls -t Output/bulckypi*|head -1`"
+           cp $bulckypi repository/binary/
           
-           cultibox="`ls -t Output/cultibox*|head -1`"
-           cp $cultibox repository/binary/
+           bulckyface="`ls -t Output/*|head -1`"
+           cp $bulckyface repository/binary/
 
-           cultiraz="`ls -t Output/cultiraz*|head -1`"
-           cp $cultiraz repository/binary/
+           bulckyraz="`ls -t Output/bulckyraz*|head -1`"
+           cp $bulckyraz repository/binary/
 
-           cultitime="`ls -t Output/cultitime*|head -1`"
-           cp $cultitime repository/binary/
+           bulckytime="`ls -t Output/bulckytime*|head -1`"
+           cp $bulckytime repository/binary/
 
-           culticonf="`ls -t Output/culticonf*|head -1`"
-           cp $culticonf repository/binary/
+           bulckyconf="`ls -t Output/bulckyconf*|head -1`"
+           cp $bulckyconf repository/binary/
 
-           cultidoc="`ls -t Output/cultidoc*|head -1`"
-           cp $cultidoc repository/binary/
+           bulckydoc="`ls -t Output/bulckydoc*|head -1`"
+           cp $bulckydoc repository/binary/
 
-           culticam="`ls -t Output/culticam*|head -1`"
-           cp $culticam repository/binary/
+           bulckycam="`ls -t Output/bulckycam*|head -1`"
+           cp $bulckycam repository/binary/
 
            cd repository
            dpkg-scanpackages binary /dev/null | gzip -9c > binary/Packages.gz
 
-           rm binary/culti*.deb
+           rm binary/bulcky*.deb
       ;;
       "clean")
            if [ -d /tmp/bulcky ]; then
