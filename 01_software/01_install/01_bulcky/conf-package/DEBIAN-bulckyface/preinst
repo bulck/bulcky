@@ -5,7 +5,7 @@ if [ -f /tmp/bulcky_upgrade ]; then
     rm /tmp/bulcky_upgrade
 fi
 
-if [ -d /var/www/bulcky/main ]; then
+if [ -d /var/www/bulcky/index.php ]; then
     touch /tmp/bulcky_upgrade
 fi
 
