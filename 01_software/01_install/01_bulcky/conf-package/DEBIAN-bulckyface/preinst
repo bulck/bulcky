@@ -1,7 +1,11 @@
 #!/bin/bash
 
 #Upgrade case:
-if [ -d /var/www/bulcky ]; then
+if [ -f /tmp/bulcky_upgrade ]; then
+    rm /tmp/bulcky_upgrade
+fi
+
+if [ -d /var/www/bulcky/main ]; then
     touch /tmp/bulcky_upgrade
 fi
 
