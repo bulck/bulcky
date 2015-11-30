@@ -28,7 +28,7 @@ if [ "$2" == "version" ]; then
     if [ "$1" == "bulckypi" ]; then
         VERSION=`cat ../../../02_bulcky_services/01_bulckyPi/VERSION`
     elif [ "$1" == "bulckyface" ] || [ "$1" == "bulckydoc" ]; then
-        VERSION=`../../02_src/VERSION`
+        VERSION=`cat ../../02_src/VERSION`
     elif [ "$1" == "bulckyraz" ]; then
         VERSION=`cat ../../../02_bulcky_services/05_bulckyRAZ/VERSION`
     elif [ "$1" == "bulckytime" ]; then
