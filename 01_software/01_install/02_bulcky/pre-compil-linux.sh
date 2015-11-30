@@ -210,9 +210,9 @@ EOF
            cp ../../../02_bulcky_services/02_bulckyConf/etc/logrotate.d/bulcky /tmp/bulcky/bulckyconf/etc/logrotate.d/
            cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.daily/bulcky /tmp/bulcky/bulckyconf/etc/cron.daily/ 
            cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.hourly/bulcky /tmp/bulcky/bulckyconf/etc/cron.hourly/
-           cp ../../../04_CultiPi/01_Software/02_bulckyConf/etc/default/bulckycron /tmp/bulcky/bulckyconf/etc/default/
-           cp ../../../04_CultiPi/01_Software/02_bulckyConf/root/.bash_aliases /tmp/bulcky/bulckyconf/root/
-           cp ../../../04_CultiPi/01_Software/02_bulckyConf/home/bulcky/.bash_aliases /tmp/bulcky/bulckyconf/home/bulcky/
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/default/bulckycron /tmp/bulcky/bulckyconf/etc/default/
+           cp ../../../02_bulcky_services/02_bulckyConf/root/.bash_aliases /tmp/bulcky/bulckyconf/root/
+           cp ../../../02_bulcky_services/01_Software/02_bulckyConf/home/bulcky/.bash_aliases /tmp/bulcky/bulckyconf/home/bulcky/
            cp -R ../../../02_bulcky_services/02_bulckyConf/etc/bulckyconf/* /tmp/bulcky/bulckyconf/etc/bulckyconf/
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyconf/DEBIAN/control
