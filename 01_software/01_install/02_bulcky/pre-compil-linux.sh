@@ -100,7 +100,7 @@ case "$1" in
 
            cp conf-package/lgpl3.txt /tmp/bulcky/bulckyface/var/www/bulcky/LICENSE
            mkdir -p /tmp/bulcky/bulckyface/var/www/bulcky/sql_install
-           cp ../../01_install/01_src/02_sql/*.sql /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/
+           cp ../01_sql/*.sql /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/
 
            cat > /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/my-extra.cnf << "EOF" 
 [client]
