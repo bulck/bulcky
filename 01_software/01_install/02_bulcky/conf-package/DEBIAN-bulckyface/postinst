@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "  * Configuring/checking Cultibox environment..."
+echo "  * Configuring/checking Bulcky environment..."
 
 chown -R www-data:www-data /var/www/bulcky
 chown -R www-data:www-data /var/www/mobile
@@ -111,12 +111,12 @@ fi
 
 if [ ! -f /tmp/bulcky_upgrade ]; then
     echo "  * Installing the Bulcky software..."
-    /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulck/sql_install/bulcky_fr.sql
+    /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/bulcky_fr.sql
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/fake_log.sql
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 bulcky -e "UPDATE sensors SET type=0  WHERE id > 1"
     echo "... OK"
 else 
-    echo "  * Upgrading the Cultibox's databases, this may take several minutes, please be patient..."
+    echo "  * Upgrading the Bulcky databases, this may take several minutes, please be patient..."
     if [ -f /var/www/bulcky/sql_install/update_sql.sql ]; then
         /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf --force -h 127.0.0.1 --port=3891 < /var/www/bulky/sql_install/update_sql.sql 2>/dev/null
     fi
