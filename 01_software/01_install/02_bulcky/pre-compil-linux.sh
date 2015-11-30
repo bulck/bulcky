@@ -36,7 +36,7 @@ if [ "$2" == "version" ]; then
     elif [ "$1" == "bulckyconf" ]; then
         VERSION=`cat ../../../02_bulcky_services/02_bulckyConf/VERSION`
     elif [ "$1" == "bulckycam" ]; then
-        VERSION=`cat ../../../02_bulcky_service/09_bulckyCam/VERSION`
+        VERSION=`cat ../../../02_bulcky_services/09_bulckyCam/VERSION`
     fi
 else
     VERSION=$2
