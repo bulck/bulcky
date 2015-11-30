@@ -24,6 +24,11 @@ if [ -d /etc/bulckyconf/postinst/ ]; then
     chown -R root:root /etc/bulckyconf/postinst
 fi
 
+if [ ! -d /var/log/bulcky ]; then
+    mkdir /var/log/bulcky
+    chown bulcky:bulcky /var/log/bulcky
+fi
+
 if [ -f /etc/bulckyconf/packages ]; then
     chown root:root /etc/bulckyconf/packages
 fi
