@@ -84,58 +84,50 @@ case "$1" in
            cd /tmp/bulcky/ && dpkg-deb --build bulckypi
            mv bulckypi.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckypi-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
-      "cultibox")
-	   debug="$3"
+      "bulckyface")
+	       debug="$3"
 
            if [ -d /tmp/bulcky ]; then
-            rm -Rf /tmp/bulcky/*
+               rm -Rf /tmp/bulcky/*
            fi
-           mkdir -p /tmp/bulcky/cultibox/var/www
-           cp -R ./conf-package/DEBIAN-cultibox /tmp/bulcky/cultibox/DEBIAN
 
-           cp -R ../../02_src/cultibox /tmp/bulcky/cultibox/var/www/cultibox
-		   cp -R ../../02_src/mobile /tmp/bulcky/cultibox/var/www/mobile
-           rm -Rf /tmp/bulcky/cultibox/var/www/cultibox/main/cultibox.wiki
-           cat ../../CHANGELOG > /tmp/bulcky/cultibox/var/www/cultibox/VERSION.txt
+           mkdir -p /tmp/bulcky/bulckyface/var/www
+           cp -R ./conf-package/DEBIAN-bulckyface /tmp/bulcky/bulckyface/DEBIAN
 
-           cp conf-package/lgpl3.txt /tmp/bulcky/cultibox/var/www/cultibox/LICENSE
-           mkdir -p /tmp/bulcky/cultibox/var/www/cultibox/sql_install
-           cp ../../01_install/01_src/02_sql/cultibox_* /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/fake_log.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/user_cultibox.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
-           cp ../../01_install/01_src/02_sql/update_sql.sql /tmp/bulcky/cultibox/var/www/cultibox/sql_install/
+           cp -R ../../02_src/bulcky /tmp/bulcky/bulckyface/var/www/bulcky
+		   cp -R ../../02_src/mobile /tmp/bulcky/bulckyface/var/www/mobile
+           rm -Rf /tmp/bulcky/bulckyface/var/www/bulcky/main/bulcky.wiki
 
-           cat > /tmp/bulcky/cultibox/var/www/cultibox/sql_install/my-extra.cnf << "EOF" 
+           cp conf-package/lgpl3.txt /tmp/bulcky/bulckyface/var/www/bulcky/LICENSE
+           mkdir -p /tmp/bulcky/bulckyface/var/www/bulcky/sql_install
+           cp ../../01_install/01_src/02_sql/*.sql /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/
+
+           cat > /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/my-extra.cnf << "EOF" 
 [client]
 user="root"
-password="cultibox"
+password="bulcky"
 EOF
-           sed -i "s/\`VERSION\` = '.*/\`VERSION\` = '`echo $VERSION`-r`echo $revision`' WHERE \`configuration\`.\`id\` =1;/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/update_sql.sql
-           cp -R ../../01_install/01_src/03_sd/* /tmp/bulcky/cultibox/var/www/cultibox/tmp/
+           sed -i "s/\`VERSION\` = '.*/\`VERSION\` = '`echo $VERSION`-r`echo $revision`' WHERE \`configuration\`.\`id\` =1;/" /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/update_sql.sql
 
            #replacement of the old version number by the new one in VERSION file
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_fr.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_en.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_de.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_it.sql
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/sql_install/cultibox_es.sql
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/bulcky_fr.sql
 
-           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/cultibox/DEBIAN/control
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/cultibox/var/www/cultibox/main/libs/lib_configuration.php
-           sed -i "s/^$GLOBALS.*\"cultibox\"/\$GLOBALS['MODE']=\"cultipi\"/g" /tmp/bulcky/cultibox/var/www/cultibox/main/libs/config.php 
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyface/DEBIAN/control
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/main/libs/lib_configuration.php
+           sed -i "s/^$GLOBALS.*\"cultibox\"/\$GLOBALS['MODE']=\"cultipi\"/g" /tmp/bulcky/bulckyface/var/www/bulcky/main/libs/config.php 
 
-           find .//tmp/bulcky/cultibox/ -name ".git*"|xargs rm -Rf
+           find /tmp/bulcky/bulckyface/ -name ".git*"|xargs rm -Rf
 
            if [ "$debug" ==  "true" ]; then
-                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/postinst
-                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/postrm
-                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/preinst
-                sed -i "3i\set -x" /tmp/bulcky/cultibox/DEBIAN/prerm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyface/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyface/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyface/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyface/DEBIAN/prerm
            fi
 
-           cd .//tmp/bulcky/ && dpkg-deb --build cultibox
+           cd /tmp/bulcky/ && dpkg-deb --build bulckyface
 
-           mv cultibox.deb ../../05_cultipi/Output/cultibox-armhf_`echo $VERSION`-r`echo $revision`.deb
+           mv bulckyface.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/02_bulcky/Output/bulckyface-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;  
       "cultiraz")
 	   debug="$3"
