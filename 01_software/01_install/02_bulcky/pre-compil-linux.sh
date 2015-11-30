@@ -207,9 +207,9 @@ EOF
            cp -R ./conf-package/DEBIAN-bulckyconf /tmp/bulcky/bulckyconf/DEBIAN
            cp -R ../../../02_bulcky_services/02_bulckyConf/usr /tmp/bulcky/bulckyconf/
 
-           cp ../../../02_bulcky_services/02_bulckyConf/etc/logrotate.d/bulckypi /tmp/bulcky/bulckyconf/etc/logrotate.d/
-           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.daily/bulckypi /tmp/bulcky/bulckyconf/etc/cron.daily/ 
-           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.hourly/bulckypi /tmp/bulcky/bulckyconf/etc/cron.hourly/
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/logrotate.d/bulcky /tmp/bulcky/bulckyconf/etc/logrotate.d/
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.daily/bulcky /tmp/bulcky/bulckyconf/etc/cron.daily/ 
+           cp ../../../02_bulcky_services/02_bulckyConf/etc/cron.hourly/bulcky /tmp/bulcky/bulckyconf/etc/cron.hourly/
            cp ../../../04_CultiPi/01_Software/02_bulckyConf/etc/default/bulckycron /tmp/bulcky/bulckyconf/etc/default/
            cp ../../../04_CultiPi/01_Software/02_bulckyConf/root/.bash_aliases /tmp/bulcky/bulckyconf/root/
            cp ../../../04_CultiPi/01_Software/02_bulckyConf/home/bulcky/.bash_aliases /tmp/bulcky/bulckyconf/home/bulcky/

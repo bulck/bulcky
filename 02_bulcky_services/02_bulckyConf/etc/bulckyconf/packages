@@ -1,3 +1,4 @@
+ifplugd
 hostapd 
 ttf-mscorefonts-installer
 tcl-tls
@@ -6,3 +7,4 @@ libjpeg62-dev
 python3
 python3-pip
 libusb-dev
+lighttpd
