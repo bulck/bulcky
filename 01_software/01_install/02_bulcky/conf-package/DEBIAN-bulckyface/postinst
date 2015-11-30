@@ -111,6 +111,7 @@ fi
 
 if [ ! -f /tmp/bulcky_upgrade ]; then
     echo "  * Installing the Bulcky software..."
+    /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/user_bulcky.sql
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/bulcky_fr.sql
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/fake_log.sql
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 bulcky -e "UPDATE sensors SET type=0  WHERE id > 1"
