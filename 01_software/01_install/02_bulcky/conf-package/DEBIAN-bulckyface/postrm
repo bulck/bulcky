@@ -6,14 +6,14 @@ if [ "$1" == "purge" ]; then
         rm -Rf /var/www/bulcky
         echo "... OK"
     fi
-    /usr/bin/mysql -u root -pcultibox -e "DROP DATABASE bulcky;" 2>/dev/null
+    /usr/bin/mysql -u root -pbulcky -e "DROP DATABASE bulcky;" 2>/dev/null
 fi
 
 if [ "$1" == "remove" ]; then
-    /usr/bin/mysql -u root -pcultibox -e "DROP DATABASE bulcky;" 2>/dev/null
+    /usr/bin/mysql -u root -pbulcky -e "DROP DATABASE bulcky;" 2>/dev/null
 fi
 
-sed -i "/www-data ALL = (root) NOPASSWD: \/etc\/init.d\/cultipi/d" /etc/sudoers
+sed -i "/www-data ALL = (root) NOPASSWD: \/etc\/init.d\/bulckypi/d" /etc/sudoers
 sed -i "/www-data ALL = (root) NOPASSWD: \/bin\/chown/d" /etc/sudoers
 sed -i "/www-data ALL = (root) NOPASSWD: \/bin\/cat/d" /etc/sudoers
 sed -i "/www-data ALL = (root) NOPASSWD: \/sbin\/shutdown/d" /etc/sudoers
