@@ -7,5 +7,5 @@ source [file join $rootDir src MCP7940N.tcl]
 
 
 set rtcHour [::MCP7940N::readSeconds]
-puts  "[clock format [clock seconds] -format "%Y %b %d %H:%M:%S"] : cultiTime : L'heure du RTC est [clock format $rtcHour -format "%Y %b %d %H:%M:%S"]"
+puts  "[clock format [clock seconds] -format "%Y %b %d %H:%M:%S"] : bulckyTime : L'heure du RTC est [clock format $rtcHour -format "%Y %b %d %H:%M:%S"]"
 

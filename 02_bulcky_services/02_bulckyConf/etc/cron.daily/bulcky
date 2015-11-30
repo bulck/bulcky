@@ -60,13 +60,13 @@ elif [ "`dpkg -s bulckypi 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckypi 
     echo "...ok"
 else
-	echo "--> Cultipi package is up-to-date"
+	echo "--> Bulckypi package is up-to-date"
 fi
 
 if [ "`apt-get -u upgrade --assume-no|grep bulckyface`" != "" ]; then
     echo "--> Upgrading bulckyface package..."
 	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss"bulckyface 
+    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyface 
     rm -Rf /var/cache/lighttpd/compress/*
     /etc/init.d/lighttpd force-reload
     echo "...ok"
@@ -76,7 +76,7 @@ elif [ "`dpkg -s bulckyface 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckyface 
     echo "...ok"
 else
-	echo "--> Cultibox package is up-to-date"
+	echo "--> Bulckyface package is up-to-date"
 fi
 
 if [ "`apt-get -u upgrade --assume-no|grep bulckyraz`" != "" ]; then
@@ -90,7 +90,7 @@ elif [ "`dpkg -s bulckyraz 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckyraz
     echo "...ok"
 else
-	echo "--> CultiRAZ package is up-to-date"
+	echo "--> Bulckyraz package is up-to-date"
 fi
 
 
@@ -105,7 +105,7 @@ elif [ "`dpkg -s bulckytime 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckytime
     echo "...ok"
 else
-	echo "--> Cultitime package is up-to-date"
+	echo "--> Bulckytime package is up-to-date"
 fi
 
 if [ "`apt-get -u upgrade --assume-no|grep bulckydoc`" != "" ]; then
@@ -119,7 +119,7 @@ elif [ "`dpkg -s bulckydoc 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckydoc
     echo "...ok"
 else
-	echo "--> Cultidoc package is up-to-date"
+	echo "--> Bulckydoc package is up-to-date"
 fi
 
 if [ "`apt-get -u upgrade --assume-no|grep bulckycam`" != "" ]; then
@@ -133,7 +133,7 @@ elif [ "`dpkg -s bulckycam 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckycam
     echo "...ok"
 else
-	echo "--> Culticam package is up-to-date"
+	echo "--> Bulckycam package is up-to-date"
 fi
 
 if [ "`apt-get -u upgrade --assume-no|grep bulckyconf`" != "" ]; then
@@ -147,7 +147,7 @@ elif [ "`dpkg -s bulckyconf 2>/dev/null|grep Version`" == "" ]; then
     apt-get install -y  --force-yes bulckyconf
     echo "...ok"
 else
-	echo "--> Culticonf package is up-to-date"
+	echo "--> Bulckyconf package is up-to-date"
 fi
 
 
