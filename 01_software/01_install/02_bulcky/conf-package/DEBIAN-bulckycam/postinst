@@ -4,9 +4,9 @@ if [ -f /etc/init.d/bulckycam ]; then
     update-rc.d bulckycam defaults
 fi
 
-chown -R bulcky:bulcky /opt/bulkycam
+chown -R bulcky:bulcky /opt/bulckycam
 chown bulcky:bulcky /etc/init.d/bulckycam /etc/init.d/mjpg_streamer
-chown -R bulcky:bulcky /etc/culticam
+chown -R bulcky:bulcky /etc/bulckycam
 chmod 744 /etc/init.d/bulckycam
 chmod 744 /etc/init.d/mjpg_streamer
 
