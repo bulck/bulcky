@@ -239,7 +239,7 @@ EOF
            mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main
 
            cp -R ./conf-package/DEBIAN-bulckydoc /tmp/bulcky/bulckydoc/DEBIAN
-           cp -R ../02_src/bulcky/main/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/
+           cp -R ../../02_src/bulcky/main/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckydoc/DEBIAN/control
            find /tmp/bulcky/bulckydoc/ -name ".git*"|xargs rm -Rf
