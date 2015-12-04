@@ -29,7 +29,7 @@ if [  "`cat /etc/sudoers|grep bulcky|grep shutdown`" == "" ]; then
     echo "bulcky ALL = (root) NOPASSWD: /sbin/shutdown" >> /etc/sudoers
 fi
 
-
+chown -R bulcky:bulcky /etc/bulckypi
 chown -R www-data:www-data /etc/bulckypi/conf_tmp
 chown -R bulcky:bulcky /var/log/bulcky
 chown -R bulcky:bulcky /opt/bulckypi
