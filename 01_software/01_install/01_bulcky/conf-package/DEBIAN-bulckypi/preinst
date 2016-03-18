@@ -38,4 +38,9 @@ if [ ! -d /var/log/bucky ]; then
     chown bulcky:bulcky /var/log/bulcky
 fi
 
+if [ ! -f /var/log/bulcky/bulckypi.log ]
+    touch /var/log/bulcky/bulckypi.log
+    chown bulcky:bulcky /var/log/bulcky/bulckypi.log
+fi
+
 exit 0
