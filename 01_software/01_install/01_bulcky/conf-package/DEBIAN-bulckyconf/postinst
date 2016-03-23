@@ -59,7 +59,7 @@ else
 fi
 
 
-if [ $VERSION -lt 230316 ]; then
+if [ $VERSION -lt 240316 ]; then
     echo "options 8192cu rtw_power_mgnt=0 rtw_enusbss=0" > /etc/modprobe.d/8192cu.conf
 
 	cat << EOF > /etc/rc.local
@@ -122,6 +122,8 @@ fi
 
 CDATE="\`date +'%Y-%m-%d %H:%M:%S'\`"
 URL_CONN="http://my.bulck.fr"
+HOST_NAME="\`/sbin/ifconfig eth0 | /bin/grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'|/bin/sed -e 's/://g'\`"
+
 
 if [ -f /VERSION ]; then
     version="version:\`cat /VERSION\`"
@@ -140,6 +142,6 @@ echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 
 exit 0
 EOF
-	echo "230316" > /VERSION
+	echo "240316" > /VERSION
 fi
 
