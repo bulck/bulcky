@@ -30,7 +30,7 @@ if [  "`cat /etc/sudoers|grep bulcky|grep fswebcam`" == "" ]; then
 fi
 
 if [  "`cat /etc/sudoers|grep bulcky|grep mjpg_streamer`" == "" ]; then
-    echo "bulcky ALL = (root) NOPASSWD: /usr/bin/mjpg_streamer" >> /etc/sudoers
+    echo "bulcky ALL = (root) NOPASSWD: /etc/init.d/mjpg_streamer" >> /etc/sudoers
 fi
 
 

@@ -16,6 +16,6 @@ if [ "$1" == "purge" ] || [ "$1" == "remove" ]; then
     fi
 
     sed -i "/bulcky ALL = (root) NOPASSWD: \/usr\/bin\/fswebcam/d" /etc/sudoers
-    sed -i "/bulcky ALL = (root) NOPASSWD: \/usr\/bin\/mjpg_streamer/d" /etc/sudoers
+    sed -i "/bulcky ALL = (root) NOPASSWD: \/etc\/init.d\/mjpg_streamer/d" /etc/sudoers
 fi
 
