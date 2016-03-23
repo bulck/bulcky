@@ -33,7 +33,7 @@ if [ -f /etc/init.d/bulckypi ]; then
     done
 fi
 
-if [ ! -d /var/log/bucky ]; then
+if [ ! -d /var/log/buclky ]; then
     mkdir /var/log/bulcky
     chown bulcky:bulcky /var/log/bulcky
 fi

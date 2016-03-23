@@ -22,7 +22,7 @@ if [ -d /etc/bulckycam ]; then
     chmod 744 /etc/init.d/mjpg_streamer
 fi
 
-find /etc/bulckypi/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
+find /etc/bulckypi/ -name "*-dist" 2>/dev/null|xargs rm 2>/dev/null; echo ""
 /etc/init.d/bulckycam force-reload
 
 
