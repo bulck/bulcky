@@ -33,12 +33,12 @@ if [ -f /etc/init.d/bulckypi ]; then
     done
 fi
 
-if [ ! -d /var/log/buclky ]; then
+if [ ! -d /var/log/bulcky ]; then
     mkdir /var/log/bulcky
     chown bulcky:bulcky /var/log/bulcky
 fi
 
-if [ ! -f /var/log/bulcky/bulckypi.log ]
+if [ ! -f /var/log/bulcky/bulckypi.log ]; then
     touch /var/log/bulcky/bulckypi.log
     chown bulcky:bulcky /var/log/bulcky/bulckypi.log
 fi
