@@ -109,7 +109,7 @@ EOF
            sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/bulcky_fr.sql
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyface/DEBIAN/control
-           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/main/libs/lib_configuration.php
+           sed -i "s/'[0-9]\+\.[0-9]\+\.[0-9][0-9]\+'/'`echo $VERSION`-r`echo $revision`'/" /tmp/bulcky/bulckyface/var/www/bulcky/main/plugin/configuration/lib_configuration.php
 
            find /tmp/bulcky/bulckyface/ -name ".git*"|xargs rm -Rf
 
