@@ -130,11 +130,11 @@ for pack in $PACKAGES; do
     version="$version:`dpkg -l $pack|grep \"ii \"|awk -F \" \" '{print $2\"-\"$3}'|tr '\n' ':'`"
 done
 
-
+CDATE="`date +'%Y-%m-%d %H:%M:%S'`"
 UPDATE_RETURN="`wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=15 -t 5 \"$URL_CONN/external/action.php?action=setfield&id_val=$HOST_NAME&id_name=mac_address&field=last_connect=\\"$CDATE\\"\"`"
+
 if [ "$UPDATE_RETURN" != "OK" ]; then
     php_args=""
-    CDATE="`date +'%Y-%m-%d %H:%M:%S'`"
     if [ "$php_args" != "" ]; then
         php_args="$php_args&last_connect=$CDATE&mac_address=$HOST_NAME"
     else
