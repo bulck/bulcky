@@ -25,4 +25,12 @@ fi
 find /etc/bulckypi/ -name "*-dist" 2>/dev/null|xargs rm 2>/dev/null; echo ""
 /etc/init.d/bulckycam force-reload
 
+if [  "`cat /etc/sudoers|grep bulcky|grep fswebcam`" == "" ]; then
+    echo "bulcky ALL = (root) NOPASSWD: /usr/bin/fswebcam" >> /etc/sudoers
+fi
+
+if [  "`cat /etc/sudoers|grep bulcky|grep mjpg_streamer`" == "" ]; then
+    echo "www-data ALL = (root) NOPASSWD: /usr/bin/mjpg_streamer" >> /etc/sudoers
+fi
+
 
