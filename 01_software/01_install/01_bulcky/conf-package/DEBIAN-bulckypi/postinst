@@ -8,35 +8,32 @@ if [ ! -d /etc/bulckypi/conf_tmp ]; then
     mkdir /etc/bulckypi/conf_tmp
 fi
 
-if [ -d /etc/bulckypi/conf_tmp/logs ]; then
-    rm -Rf /etc/bulckypi/conf_tmp/logs
-fi
-
-if [ -d /etc/bulckypi/conf_tmp/cnf ]; then
-    rm -Rf /etc/bulckypi/conf_tmp/cnf
-fi
-
-if [ -d /etc/bulckypi/conf_tmp/bin ]; then
-    rm -Rf /etc/bulckypi/conf_tmp/bin
-fi
-
-if [ -f /etc/bulckypi/conf_tmp.log.txt ]; then
-    rm /etc/bulckypi/conf_tmp.log.txt
-fi
-
-
 if [  "`cat /etc/sudoers|grep bulcky|grep shutdown`" == "" ]; then
     echo "bulcky ALL = (root) NOPASSWD: /sbin/shutdown" >> /etc/sudoers
 fi
 
-chown -R bulcky:bulcky /etc/bulckypi
-chown -R www-data:www-data /etc/bulckypi/conf_tmp
-chown -R bulcky:bulcky /var/log/bulcky
-chown -R bulcky:bulcky /opt/bulckypi
-chown bulcky:bulcky /etc/init.d/bulckypi
-chmod 744 /etc/init.d/bulckypi
-chmod 755 /var/log/bulcky
+if [ -d /etc/bulckypi }; then
+    chown -R bulcky:bulcky /etc/bulckypi
+fi
+
+if [ -d /etc/bulckypi/conf_tmp ]; then
+    chown -R www-data:www-data /etc/bulckypi/conf_tmp
+fi
+
+if [ -d /var/log/bulcky ]; then
+    chown -R bulcky:bulcky /var/log/bulcky
+fi
+
+if [ -d /opt/bulckypi ]; then
+    chown -R bulcky:bulcky /opt/bulckypi
+    chmod 755 /var/log/bulcky
+fi
+
+if [ -f  /etc/init.d/bulckypi ]; then
+    chown bulcky:bulcky /etc/init.d/bulckypi
+    chmod 744 /etc/init.d/bulckypi
+fi
+
 
 find /etc/bulckypi/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
-
 /etc/init.d/bulckypi force-reload

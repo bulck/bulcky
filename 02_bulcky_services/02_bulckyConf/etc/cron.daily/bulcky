@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PACKAGES="bulckypi bulckyface bulckyraz bulckytime bulckydoc bulckytime bulckyconf"
+
+
 function check_package_manager {
     count=0
     while [ "`ps ax|grep 'apt-'|grep -v 'grep'`" != "" ] || [ "`ps ax|grep 'dpkg -i'|grep -v 'grep'`" != "" ]; do
@@ -35,6 +38,8 @@ if [ "$now" != "yes" ]; then
     sleep $[ ( $RANDOM % 3600 )  + 1 ]s
 fi
 
+echo "--> Starting $0..."
+
 check_package_manager
 if [ $? -eq 1 ]; then
     echo "--> Error, a package manager is already running... exiting"
@@ -47,131 +52,23 @@ fi
 
 echo "--> Updating repositories..."
 apt-get update
-echo "...ok"
+echo "--> ...ok"
 
-if [ "`apt-get -u upgrade --assume-no|grep bulckypi`" != "" ]; then
-    echo "--> Upgrading bulckypi package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckypi
-    echo "...ok"
-elif [ "`dpkg -s bulckypi 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckypi package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckypi 
-    echo "...ok"
-else
-	echo "--> Bulckypi package is up-to-date"
-fi
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckyface`" != "" ]; then
-    echo "--> Upgrading bulckyface package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyface 
-    rm -Rf /var/cache/lighttpd/compress/*
-    /etc/init.d/lighttpd force-reload
-    echo "...ok"
-elif [ "`dpkg -s bulckyface 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckyface package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckyface 
-    echo "...ok"
-else
-	echo "--> Bulckyface package is up-to-date"
-fi
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckyraz`" != "" ]; then
-    echo "--> Upgrading bulckyraz package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyraz
-    echo "...ok"
-elif [ "`dpkg -s bulckyraz 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckyraz package..."
-	sleep 2 
-    apt-get install -y  --force-yes bulckyraz
-    echo "...ok"
-else
-	echo "--> Bulckyraz package is up-to-date"
-fi
-
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckytime`" != "" ]; then
-    echo "--> Upgrading bulckytime package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckytime
-    echo "...ok"
-elif [ "`dpkg -s bulckytime 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckytime package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckytime
-    echo "...ok"
-else
-	echo "--> Bulckytime package is up-to-date"
-fi
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckydoc`" != "" ]; then
-    echo "--> Upgrading bulckydoc package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckydoc
-    echo "...ok"
-elif [ "`dpkg -s bulckydoc 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckydoc package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckydoc
-    echo "...ok"
-else
-	echo "--> Bulckydoc package is up-to-date"
-fi
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckycam`" != "" ]; then
-    echo "--> Upgrading bulckycam package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckycam
-    echo "...ok"
-elif [ "`dpkg -s bulckycam 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckycam package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckycam
-    echo "...ok"
-else
-	echo "--> Bulckycam package is up-to-date"
-fi
-
-if [ "`apt-get -u upgrade --assume-no|grep bulckyconf`" != "" ]; then
-    echo "--> Upgrading bulckyconf package..."
-	sleep 2
-    apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" bulckyconf
-    echo "...ok"
-elif [ "`dpkg -s bulckyconf 2>/dev/null|grep Version`" == "" ]; then
-    echo "--> Installing bulckyconf package..."
-	sleep 2
-    apt-get install -y  --force-yes bulckyconf
-    echo "...ok"
-else
-	echo "--> Bulckyconf package is up-to-date"
-fi
-
-
-
-if [ -d /var/www/bulcky/tmp/import ]; then
-    echo "--> Cleaning import directory..."
-    rm -Rf /var/www/bulcky/tmp/import/*
-    echo "...ok"
-else
-    mkdir /var/www/bulcky/tmp/import
-	chown www-data:www-data /var/www/bulcky/tmp/import
-fi
-
-if [ -d /var/www/bulcky/tmp/export ]; then
-    echo "--> Cleaning bulcky directory..."
-    rm -Rf /var/www/bulcky/tmp/export/*
-    echo "...ok"
-else
-	mkdir /var/www/bulcky/tmp/export
-	chown www-data:www-data /var/www/bulcky/tmp/export
-fi
-
-rm -Rf /var/www/bulcky/main/templates_c/*.ser 2>/dev/null
-
+for pack in $PACKAGES; do
+    if [ "`apt-get -u upgrade --assume-no|grep $pack`" != "" ]; then
+        echo "--> Upgrading $pack package..."
+	    sleep 2
+        apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" $pack
+        echo "--> ...ok"
+    elif [ "`dpkg -s $pack 2>/dev/null|grep Version`" == "" ]; then
+        echo "--> Installing $pack package..."
+	    sleep 2
+        apt-get install -y  --force-yes $pack
+        echo "--> ...ok"
+    else
+	    echo "--> $pack package is up-to-date"
+    fi
+done
 
 if [ -f /etc/bulckyconf/packages ]; then
     packages="`cat /etc/bulckyconf/packages`"
@@ -181,35 +78,96 @@ if [ -f /etc/bulckyconf/packages ]; then
                 echo "--> Installing package $pack..."
                 sleep 2
 				apt-get install -y --force-yes $pack
-                echo "...ok"
+                echo "--> ...ok"
 
                 if [ -f /etc/bulckyconf/postinst/$pack ]; then
                     echo "--> Executing postinstall script for $pack"
                     bash /etc/bulckyconf/postinst/$pack
-                    echo "...ok"
+                    echo "--> ...ok"
                 fi
             fi
         done       
     fi
 fi
 
+if [ -d /var/www/bulcky/tmp/import ]; then
+    echo "--> Cleaning import directory..."
+    rm -Rf /var/www/bulcky/tmp/import/* 2>/dev/null
+    echo "--> ...ok"
+else
+    mkdir /var/www/bulcky/tmp/import
+	chown www-data:www-data /var/www/bulcky/tmp/import
+fi
 
+if [ -d /var/www/bulcky/tmp/export ]; then
+    echo "--> Cleaning bulcky directory..."
+    rm -Rf /var/www/bulcky/tmp/export/* 2>/dev/null
+    echo "--> ...ok"
+else
+	mkdir /var/www/bulcky/tmp/export
+	chown www-data:www-data /var/www/bulcky/tmp/export
+fi
+
+rm -Rf /var/www/bulcky/main/templates_c/*.ser 2>/dev/null
 /sbin/iw reg set FR
 
+
 echo "--> Cleaning tmp directory..."
-rm -Rf /tmp/*
-echo "...ok"
+rm -Rf /tmp/* 2>/dev/null
+echo "--> ...ok"
+	
+echo "--> Cleaning lighttpd cache..."
+if [ -d /var/cache/lighttpd/compress ]; then
+	rm -Rf /var/cache/lighttpd/compress/* 2>/dev/null
+fi
+echo "--> ...ok"
+
+echo "--> Reccording object into the database"
+URL_CONN="http://my.bulck.fr/"
+HOST_NAME="`/sbin/ifconfig eth0 | /bin/grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'|/bin/sed -e 's/://g'`"
+
+for pack in $PACKAGES; do
+    version="$version:`dpkg -l $pack|grep \"ii \"|awk -F \" \" '{print $2\"-\"$3}'|tr '\n' ':'`"
+done
+
+
+UPDATE_RETURN="`wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=15 -t 5 \"$URL_CONN/external/action.php?action=setfield&id_val=$HOST_NAME&id_name=mac_address&field=last_connect=\\"$CDATE\\"\"`"
+if [ "$UPDATE_RETURN" != "OK" ]; then
+    php_args=""
+    CDATE="`date +'%Y-%m-%d %H:%M:%S'`"
+    if [ "$php_args" != "" ]; then
+        php_args="$php_args&last_connect=$CDATE&mac_address=$HOST_NAME"
+    else
+        php_args="last_connect=$CDATE&mac_address=$HOST_NAME"
+    fi
+
+    php_args="$php_args&version=\"$version\""
+
+    wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=20 -t 5 "$URL_CONN/external/action.php?action=setobject&$php_args"
+else
+    UPDATE_RETURN="`wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=15 -t 5 \"$URL_CONN/external/action.php?action=setfield&id_val=$HOST_NAME&id_name=mac_address&field=version=\\"$version\\"\"`"
+    if [ "$UPDATE_RETURN" != "OK" ]; then
+        echo "\n --> Error updating VERSION"
+    fi
+fi
+echo -e "\n--> ...ok"	
 	
 if [ ! -f /var/lock/UPGRADE ]; then
-    nohup /bin/bash -c 'sleep 3600 && /etc/cron.daily/bulcky --now' >/dev/null 2>&1 &
-    touch /var/lock/UPGRADE
+	if [ "$manual" != "yes" ]; then
+		nohup /bin/bash -c 'sleep 3600 && /etc/cron.daily/bulckplayer --now' >/dev/null 2>&1 &
+		touch /var/lock/UPGRADE
+	fi
 else
     rm -f /var/lock/UPGRADE
 fi
+
 
 if [ -f /var/lock/REBOOT_NEEDED ]; then
     echo "--> Rebooting system by lock file..."
     rm -Rf /var/lock/REBOOT_NEEDED
     shutdown -r now
-    echo "...ok"
-fi
+    echo "--> ...ok"
+fi	
+
+echo "`date +%s`" > /tmp/UPDATED
+echo "--> ... $0 ends"

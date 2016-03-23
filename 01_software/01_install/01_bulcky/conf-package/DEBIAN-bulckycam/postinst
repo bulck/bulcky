@@ -4,11 +4,25 @@ if [ -f /etc/init.d/bulckycam ]; then
     update-rc.d bulckycam defaults
 fi
 
-chown -R bulcky:bulcky /opt/bulckycam
-chown bulcky:bulcky /etc/init.d/bulckycam /etc/init.d/mjpg_streamer
-chown -R bulcky:bulcky /etc/bulckycam
-chmod 744 /etc/init.d/bulckycam
-chmod 744 /etc/init.d/mjpg_streamer
+if [ -d /opt/bulckycam ]; then
+    chown -R bulcky:bulcky /opt/bulckycam
+fi
 
+if [ -f /etc/init.d/bulckycam ]; then
+    chown bulcky:bulcky /etc/init.d/bulckycam 
+    chmod 744 /etc/init.d/bulckycam
+fi
+
+if [ -f /etc/init.d/mjpg_streamer ];then
+     chown bulcky:bulcky  /etc/init.d/mjpg_streamer
+fi
+
+if [ -d /etc/bulckycam ]; then
+    chown -R bulcky:bulcky /etc/bulckycam
+    chmod 744 /etc/init.d/mjpg_streamer
+fi
+
+find /etc/bulckypi/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
 /etc/init.d/bulckycam force-reload
+
 

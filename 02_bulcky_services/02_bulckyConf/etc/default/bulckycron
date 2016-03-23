@@ -1,11 +1,41 @@
-exec 2>&1
-exec > >(logger -t "bulckycron.minutly")
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        (--now) now=yes;;
+        (--manual) manual=yes;;
+        (*)  break;;
+    esac
+    shift
+done
+
+
+if [ "$manual" != "yes" ]; then
+    exec 2>&1
+    exec > >(logger -t "bulckplayer.minutly")
+fi
+
+#Random sleep:
+if [ "$now" != "yes" ]; then
+    sleep $[ ( $RANDOM % 60 )  + 1 ]s
+fi
+
+
+echo "--> Starting $0..."
 
 
 BULCKYPI_ACTIV="yes"
 BULCKYTIME_ACTIV="yes"
 BULCKYRAZ_ACTIV="yes"
 BULCKYCAM_ACTIV="yes"
+HOST_NAME="`/sbin/ifconfig eth0 | /bin/grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'|/bin/sed -e 's/://g'`"
+URL_CONN="http://my.bulck.fr"
+REVERSE_PORT="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_ssh\"`"
+REVERSE_HTTP="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_http\"`"
+REVERSE_HTTPS="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_https\"`"
+
+if [ -f /etc/bulckconf/reverse_ssh.conf ]; then
+    . /etc/bulckconf/reverse_ssh.conf
+fi
 
 
 if [ "$BULCKYPI_ACTIV" == "yes" ]; then
@@ -47,80 +77,95 @@ if [ "$BULCKYCAM_ACTIV" == "yes" ]; then
 fi
 
 
-if [ -f /etc/bulckyconf/reverse_ssh.conf ]; then
-        . /etc/bulckyconf/reverse_ssh.conf
-fi
-
-
-if [ "$BULCKYSSH_ACTIV" == "yes" ]; then
-    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_SSH|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_SSH" != "" ]; then
+if [ "$REVERSE_PORT" != "" ]  && [ $REVERSE_PORT -ne 0 ]; then
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT|/bin/grep $REVERSE_IP`" == "" ]; then
         pid="`ps ax|/bin/grep ssh|/bin/grep ':22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
         if [ "$pid" != "" ]; then
-            echo "--> Killing old reverse SSH..."
-            kill -9 $pid
+            echo "--> Killing old reverse SSH..."  
+			kill -9 $pid
             echo "...ok"
         fi
- 
+
         echo "--> Starting reverse SSH..."
-        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_SSH:localhost:22 bulcky@$REVERSE_IP
-        echo "...ok"
-    fi
-
-    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_HTTP|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_HTTP" != "" ]; then
-        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
-        if [ "$pid" != "" ]; then
-            echo "--> Killing old reverse HTTP..."
-            kill -9 $pid
-            echo "...ok"
-        fi
-
-
-        echo "--> Starting reverse HTTP..."
-        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_HTTP:localhost:80 bulcky@$REVERSE_IP -g
-        echo "...ok"
-    fi
-
-    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_HTTPS|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_HTTPS" != "" ]; then   
-        pid="`ps ax|/bin/grep ssh|/bin/grep '443'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
-        if [ "$pid" != "" ]; then
-            echo "--> Killing old reverse HTTPS..."
-            kill -9 $pid
-            echo "...ok"
-        fi
-
-        echo "--> Starting reverse HTTPS..."
-        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_HTTPS:localhost:443 bulcky@$REVERSE_IP -g
-        echo "...ok"
-    fi
-	
-	if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT_WEBCAM|/bin/grep $REVERSE_IP`" == "" ] && [ "$REVERSE_PORT_WEBCAM" != "" ]; then
-        pid="`ps ax|/bin/grep ssh|/bin/grep ':8081'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
-        if [ "$pid" != "" ]; then
-            echo "--> Killing old reverse WEBCAM..."
-            kill -9 $pid
-            echo "...ok"
-        fi
-
-
-        echo "--> Starting reverse WEBCAM..."
-        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT_WEBCAM:localhost:8081 bulcky@$REVERSE_IP -g
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_PORT:localhost:22 bulcky@$REVERSE_IP
         echo "...ok"
     fi
 else
-    pid="`ps ax|/bin/grep autossh|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_PORT|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing auto SSH..."
         kill -9 $pid
         echo "...ok"
     fi
 
-    pid="`ps ax|/bin/grep 'ssh -NR'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_PORT|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing remaining SSH..."
         kill -9 $pid
         echo "...ok"
     fi
 fi
+
+
+if [ "$REVERSE_HTTP" != "" ]  && [ $REVERSE_HTTP -ne 0 ]; then
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_HTTP|/bin/grep $REVERSE_IP`" == "" ]; then
+        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse HTTP..."  
+			kill -9 $pid
+            echo "...ok"
+        fi
+
+        echo "--> Starting reverse HTTP..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_HTTP:localhost:80 bulcky@$REVERSE_IP
+        echo "...ok"
+    fi
+else
+    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_HTTP|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing auto HTTP..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_HTTP|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing remaining HTTP..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+fi
+
+
+if [ "$REVERSE_HTTPS" != "" ]  && [ $REVERSE_HTTPS -ne 0 ]; then
+    if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_HTTPS|/bin/grep $REVERSE_IP`" == "" ]; then
+        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        if [ "$pid" != "" ]; then
+            echo "--> Killing old reverse HTTPS..."  
+			kill -9 $pid
+            echo "...ok"
+        fi
+
+        echo "--> Starting reverse HTTPS..."
+        export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $REVERSE_HTTPS:localhost:443 bulcky@$REVERSE_IP
+        echo "...ok"
+    fi
+else
+    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_HTTPS|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing auto HTTPS..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_HTTPS|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    if [ "$pid" != "" ]; then
+        echo "--> Killing remaining HTTPS..."
+        kill -9 $pid
+        echo "...ok"
+    fi
+fi
+
 
 # Check aliveness of wlan connection:
 if [ "`/sbin/ifconfig wlan0 2>/dev/null`" != "" ]; then
