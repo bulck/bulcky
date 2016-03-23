@@ -20,7 +20,7 @@ if [ ! -O /etc/logrotate.d/bulcky ] || [ ! -G /etc/logrotate.d/bulcky ]; then
     chmod 644 /etc/logrotate.d/bulcky
 fi
 
-if [ -d /etc/bulckyconf/postinst/ ]; then
+if [ -d /etc/bulckyconf/postinst ]; then
     chown -R root:root /etc/bulckyconf/postinst
 fi
 
@@ -43,11 +43,12 @@ fi
 
 if [ -f /usr/bin/mjpg_streamer ]; then
     chmod 755 /usr/bin/mjpg_streamer
+    chown bulcky:bulcky /usr/bin/mjpg_streamer
 fi
 
 
 if [ "`cat /etc/crontab|grep '[b]ulckycron'`" == "" ]; then
-    echo "*/1 *   * * *   root    /bin/bash /etc/default/bulckycron" >> /etc/crontab
+    echo "*/5 *   * * *   root    /bin/bash /etc/default/bulckycron" >> /etc/crontab
 fi
 
 
