@@ -1,2 +1,7 @@
 #!/bin/bash
 
+if [ "$1" == "purge" ] || [ "$1" == "remove" ]; then
+    if [ -d /var/www/bulcky/main/bulcky.wiki ]; then
+        rm -Rf /var/www/bulcky/main/bulcky.wiki
+    fi
+fi

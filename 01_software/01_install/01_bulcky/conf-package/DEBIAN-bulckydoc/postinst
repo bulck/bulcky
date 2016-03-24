@@ -1,3 +1,5 @@
 #!/bin/bash
 
-chown -R www-data:www-data /var/www/bulcky/main/bulcky.wiki
+if [ -d /var/www/bulcky/main/bulcky.wiki ]; then
+    chown -R www-data:www-data /var/www/bulcky/main/bulcky.wiki
+fi

@@ -1,3 +1,5 @@
 #!/bin/bash
 
+/usr/bin/mysql -u root -pbulcky -h 127.0.0.1 --port=3891 -e "DROP database bulcky;"
+
 exit 0

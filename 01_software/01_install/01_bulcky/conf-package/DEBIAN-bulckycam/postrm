@@ -14,5 +14,8 @@ if [ "$1" == "purge" ] || [ "$1" == "remove" ]; then
     if [ -f /etc/init.d/bulckycam ]; then
         rm -Rf /etc/init.d/bulckycam
     fi
+
+    sed -i "/bulcky ALL = (root) NOPASSWD: \/usr\/bin\/fswebcam/d" /etc/sudoers
+    sed -i "/bulcky ALL = (root) NOPASSWD: \/etc\/init.d\/mjpg_streamer/d" /etc/sudoers
 fi
 

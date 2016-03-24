@@ -2,8 +2,14 @@
 
 echo "  * Configuring/checking Bulcky environment..."
 
-chown -R www-data:www-data /var/www/bulcky
-chown -R www-data:www-data /var/www/mobile
+if [ -d /var/www/bulcky ]; then
+	chown -R www-data:www-data /var/www/bulcky
+
+fi
+
+if [ -d /var/www/mobile ]; then
+	chown -R www-data:www-data /var/www/mobile
+fi
 
 if [  "`cat /etc/sudoers|grep www-data|grep ifconfig`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /sbin/ifconfig" >> /etc/sudoers
@@ -109,7 +115,8 @@ fi
 
 find /var/www/bulcky/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
 
-
-chmod 777 /var/www/bulcky/tmp
+if [ -d /var/www/bulcky/tmp ]; then
+    chmod 777 /var/www/bulcky/tmp
+fi
 
 
