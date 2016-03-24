@@ -4,12 +4,7 @@
 set rootDir [file dirname [info script]]
 
 # On ajoute le path des outils
-if {$::tcl_platform(os) == "Windows NT"} {
-    lappend auto_path [file join $rootDir .. 01_bulckyPi lib tcl]
-    puts [file join $rootDir .. 01_bulckyPi lib tcl]
-} else {
-    lappend auto_path [file join $rootDir .. bulckypi lib tcl]
-}
+lappend auto_path $rootDir
 
 package require piXML
 
