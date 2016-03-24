@@ -79,7 +79,7 @@ fi
 
 if [ "$REVERSE_PORT" != "" ]  && [ $REVERSE_PORT -ne 0 ]; then
     if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_PORT|/bin/grep $REVERSE_IP`" == "" ]; then
-        pid="`ps ax|/bin/grep ssh|/bin/grep ':22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        pid="`ps ax|/bin/grep ssh|/bin/grep 'localhost:22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
         if [ "$pid" != "" ]; then
             echo "--> Killing old reverse SSH..."  
 			kill -9 $pid
@@ -91,14 +91,14 @@ if [ "$REVERSE_PORT" != "" ]  && [ $REVERSE_PORT -ne 0 ]; then
         echo "...ok"
     fi
 else
-    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_PORT|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep autossh|/bin/grep 'localhost:22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing auto SSH..."
         kill -9 $pid
         echo "...ok"
     fi
 
-    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_PORT|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep 'localhost:22'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing remaining SSH..."
         kill -9 $pid
@@ -109,7 +109,7 @@ fi
 
 if [ "$REVERSE_HTTP" != "" ]  && [ $REVERSE_HTTP -ne 0 ]; then
     if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_HTTP|/bin/grep $REVERSE_IP`" == "" ]; then
-        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        pid="`ps ax|/bin/grep ssh|/bin/grep 'localhost:80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
         if [ "$pid" != "" ]; then
             echo "--> Killing old reverse HTTP..."  
 			kill -9 $pid
@@ -121,14 +121,14 @@ if [ "$REVERSE_HTTP" != "" ]  && [ $REVERSE_HTTP -ne 0 ]; then
         echo "...ok"
     fi
 else
-    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_HTTP|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep autossh|/bin/grep 'localhost:80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing auto HTTP..."
         kill -9 $pid
         echo "...ok"
     fi
 
-    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_HTTP|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep 'localhost:80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing remaining HTTP..."
         kill -9 $pid
@@ -139,7 +139,7 @@ fi
 
 if [ "$REVERSE_HTTPS" != "" ]  && [ $REVERSE_HTTPS -ne 0 ]; then
     if [ "`ps ax|/bin/grep ssh|/bin/grep $REVERSE_HTTPS|/bin/grep $REVERSE_IP`" == "" ]; then
-        pid="`ps ax|/bin/grep ssh|/bin/grep ':80'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+        pid="`ps ax|/bin/grep ssh|/bin/grep 'localhost:443'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
         if [ "$pid" != "" ]; then
             echo "--> Killing old reverse HTTPS..."  
 			kill -9 $pid
@@ -151,14 +151,14 @@ if [ "$REVERSE_HTTPS" != "" ]  && [ $REVERSE_HTTPS -ne 0 ]; then
         echo "...ok"
     fi
 else
-    pid="`ps ax|/bin/grep autossh|/bin/grep $REVERSE_HTTPS|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep autossh|/bin/grep 'localhost:443'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing auto HTTPS..."
         kill -9 $pid
         echo "...ok"
     fi
 
-    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep $REVERSE_HTTPS|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+    pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep 'localhost:443'|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
     if [ "$pid" != "" ]; then
         echo "--> Killing remaining HTTPS..."
         kill -9 $pid
