@@ -32,6 +32,9 @@ URL_CONN="http://my.bulck.fr"
 REVERSE_PORT="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_ssh\"`"
 REVERSE_HTTP="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_http\"`"
 REVERSE_HTTPS="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_https\"`"
+REVERSE_WEBCAM="`wget -qO- \"$URL_CONN/external/action.php?action=getfield&id=$HOST_NAME&field=reverse_webcam\"`"
+IFS='-' read -r -a REVERSE_WEBCAM <<< "$REVERSE_WEBCAM"
+
 
 if [ -f /etc/bulckyconf/reverse_ssh.conf ]; then
     . /etc/bulckyconf/reverse_ssh.conf
@@ -165,6 +168,40 @@ else
         echo "...ok"
     fi
 fi
+
+
+port=8080
+for webcam in "${REVERSE_WEBCAM[@]}"; do
+	port=`expr $port + 1`
+	if [ "$webcam" != "" ]  && [ $webcam -ne 0 ]; then
+		if [ "`ps ax|/bin/grep ssh|/bin/grep $webcam|/bin/grep $REVERSE_IP`" == "" ]; then
+			pid="`ps ax|/bin/grep ssh|/bin/grep \"localhost:$port\"|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+			if [ "$pid" != "" ]; then
+				echo "--> Killing old reverse Webcam SSH..."
+				kill -9 $pid
+				echo "...ok"
+			fi
+
+			echo "--> Starting reverse Webcam..."
+			export AUTOSSH_POLL=30; /usr/bin/autossh -p 666 -f -M 0 -NR $webcam:localhost:$port bulcky@$REVERSE_IP
+			echo "...ok"
+		fi
+	else
+		pid="`ps ax|/bin/grep autossh|/bin/grep \"localhost:$port\"|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+		if [ "$pid" != "" ]; then
+			echo "--> Killing auto Webcam SSH..."
+			kill -9 $pid
+			echo "...ok"
+		fi
+
+		pid="`ps ax|/bin/grep 'ssh'|/bin/grep '\-NR'|/bin/grep \"localhost:$port\"|/bin/grep -v 'grep'|awk -F ' ' '{print $1}'`"
+		if [ "$pid" != "" ]; then
+			echo "--> Killing remaining Webcam SSH..."
+			kill -9 $pid
+			echo "...ok"
+		fi
+	fi
+done
 
 
 # Check aliveness of wlan connection:

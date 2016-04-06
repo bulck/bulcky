@@ -46,6 +46,11 @@ if [ -f /usr/bin/mjpg_streamer ]; then
     chown bulcky:bulcky /usr/bin/mjpg_streamer
 fi
 
+if [ ! -d /home/bulcky/packages }; then
+    mkdir /home/bulcky/packages
+    chown bulcky:bulcky /home/bulcky/packages
+fi
+
 
 if [ "`cat /etc/crontab|grep '[b]ulckycron'`" == "" ]; then
     echo "*/5 *   * * *   root    /bin/bash /etc/default/bulckycron" >> /etc/crontab
