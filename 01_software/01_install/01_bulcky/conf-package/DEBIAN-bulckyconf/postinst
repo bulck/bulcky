@@ -46,7 +46,7 @@ if [ -f /usr/bin/mjpg_streamer ]; then
     chown bulcky:bulcky /usr/bin/mjpg_streamer
 fi
 
-if [ ! -d /home/bulcky/packages }; then
+if [ ! -d /home/bulcky/packages ]; then
     mkdir /home/bulcky/packages
     chown bulcky:bulcky /home/bulcky/packages
 fi
