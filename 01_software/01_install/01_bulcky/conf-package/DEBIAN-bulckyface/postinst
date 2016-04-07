@@ -95,6 +95,15 @@ if [  "`cat /etc/sudoers|grep www-data|grep iwlist`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /sbin/iwlist" >> /etc/sudoers
 fi
 
+if [ -f /var/www/mobile/param.ini ]; then
+    chmod 777 /var/www/mobile/param.ini
+fi
+
+if [ -f /var/www/mobile/config.php ]; then
+    chmod 777 /var/www/mobile/config.php
+fi
+
+
 if [ ! -f /tmp/bulcky_upgrade ]; then
     echo "  * Installing the Bulcky software..."
     /usr/bin/mysql --defaults-extra-file=/var/www/bulcky/sql_install/my-extra.cnf -h 127.0.0.1 --port=3891 < /var/www/bulcky/sql_install/user_bulcky.sql
