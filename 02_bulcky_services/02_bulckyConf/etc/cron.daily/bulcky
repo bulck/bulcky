@@ -127,7 +127,7 @@ URL_CONN="http://my.bulck.fr/"
 HOST_NAME="`/sbin/ifconfig eth0 | /bin/grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'|/bin/sed -e 's/://g'`"
 
 if [ -f /VERSION ]; then
-    version="version:\`cat /VERSION\`"
+    version="version:`cat /VERSION`"
 else
     version="version:000000"
 fi
