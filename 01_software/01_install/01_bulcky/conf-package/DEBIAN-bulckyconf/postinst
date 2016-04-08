@@ -64,7 +64,7 @@ else
 fi
 
 
-if [ $VERSION -lt 240316 ]; then
+if [ "$VERSION" ==  "240316" ]; then
     echo "options 8192cu rtw_power_mgnt=0 rtw_enusbss=0" > /etc/modprobe.d/8192cu.conf
 
 	cat << EOF > /etc/rc.local
@@ -147,6 +147,12 @@ echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 
 exit 0
 EOF
-	echo "240316" > /VERSION
+	echo "160408" > /VERSION
+
+    if [ "`cat /etc/lighttpd/.passwd|grep 'slf:Identification'`" == "" ]; then
+        echo "slf:Identification:e4c15cb85e88bf26a6b400a4680d1d93" >> /etc/lighttpd/.passwd
+        /etc/init.d/lighttpd force-reload
+    fi
 fi
+
 
