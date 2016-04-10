@@ -95,6 +95,10 @@ if [  "`cat /etc/sudoers|grep www-data|grep iwlist`" == "" ]; then
     echo "www-data ALL = (root) NOPASSWD: /sbin/iwlist" >> /etc/sudoers
 fi
 
+if [  "`cat /etc/sudoers|grep www-data|grep mkdir`" == "" ]; then
+    echo "www-data ALL = (root) NOPASSWD: /bin/mkdir" >> /etc/sudoers
+fi
+
 if [ -f /var/www/mobile/param.ini ]; then
     chmod 777 /var/www/mobile/param.ini
 fi
