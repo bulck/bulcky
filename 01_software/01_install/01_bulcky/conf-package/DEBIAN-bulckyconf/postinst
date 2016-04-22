@@ -155,7 +155,7 @@ EOF
     fi
 fi
 
-if [ "$VERSION" -lt  160418 ]; then
+if [ "$VERSION" -lt  160422 ]; then
     cat << EOF > /etc/rc.local
 #!/bin/bash 
 
@@ -177,7 +177,6 @@ fi
 if [ "\`grep eth1 /etc/network/interfaces \`" == "" ]; then
     echo "" >> /etc/network/interfaces
     echo "#IFACE ETH1" >> /etc/network/interfaces
-    echo "auto eth1" >> /etc/network/interfaces
     echo "allow-hotplug eth1" >> /etc/network/interfaces
     echo "iface eth1 inet dhcp" >> /etc/network/interfaces
 
@@ -245,7 +244,28 @@ echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 
 exit 0
 EOF
-    echo "160418" > /VERSION
+
+cat << EOF > /etc/default/ifplugd 
+# This file may be changed either manually or by running dpkg-reconfigure.
+#
+# N.B.: dpkg-reconfigure deletes everything from this file except for
+# the assignments to variables INTERFACES, HOTPLUG_INTERFACES, ARGS and
+# SUSPEND_ACTION.  When run it uses the current values of those variables
+# as their default values, thus preserving the administrator's changes.
+#
+# This file is sourced by both the init script /etc/init.d/ifplugd and
+# the udev script /lib/udev/ifplugd.agent to give default values.
+# The init script starts ifplugd for all interfaces listed in
+# INTERFACES, and the udev script starts ifplugd for all interfaces
+# listed in HOTPLUG_INTERFACES. The special value all starts one
+# ifplugd for all interfaces being present.
+INTERFACES="eth0 eth1"
+HOTPLUG_INTERFACES=""
+ARGS="-q -f -u0 -d10 -w -I"
+SUSPEND_ACTION="stop"
+EOF
+
+    echo "160422" > /VERSION
 fi
 
 
