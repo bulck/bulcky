@@ -23,6 +23,32 @@ fi
 echo "--> Starting $0..."
 
 
+if [ -f /etc/bulckyconf/system.conf ]; then
+    . /etc/bulckyconf/system.conf
+
+
+    if [ -z "$DEFAULT_WEBSITE" ] || [ ! -d /var/www/$DEFAULT_WEBSITE ]; then
+        DEFAULT_WEBSITE="bulcky"
+    fi
+
+    CONF_FILE="lighttpd.conf lighttpd.conf.https lighttpd.conf.base"
+    reconf=0;
+    for CONF in $CONF_FILE; do
+        if [ -f /etc/lighttpd/$CONF ]; then
+            line_conf="`grep \"url.redirect = (\\"^/\$\\" => \\"/$DEFAULT_WEBSITE/\\")\" /etc/lighttpd/$CONF`"
+            if [ "$line_conf" == "" ]; then
+                sed -i "s#url.redirect = (\"^/\$\" =>.*#url.redirect = (\"^/\$\" => \"/$DEFAULT_WEBSITE/\")#g" /etc/lighttpd/$CONF
+                reconf=1;
+            fi
+        fi
+    done
+
+    if [ "$reconf" == "1" ]; then
+        /etc/init.d/lighttpd restart
+    fi
+fi
+
+
 BULCKYPI_ACTIV="yes"
 BULCKYTIME_ACTIV="yes"
 BULCKYRAZ_ACTIV="yes"
