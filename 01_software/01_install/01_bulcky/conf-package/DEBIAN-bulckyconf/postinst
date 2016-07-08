@@ -509,8 +509,101 @@ EOF
 
     fi
 
-    echo "160609" > /VERSION
+    cat << EOF > /etc/rc.local
+#!/bin/bash 
+
+#Reconfigure wlan0 at boot:
+if [ "\`/sbin/ifconfig wlan0\`" != "" ]; then
+    if [ "\`/bin/grep 10.0.0.100 /etc/network/interfaces\`" == "" ]; then
+        /bin/ping -c 1 8.8.8.8 >/dev/null 2>&1
+        if [ \$? -ne 0 ]; then
+            /sbin/ifdown --force wlan0
+            sleep 1
+            /sbin/ifup --force wlan0 
+        fi
+    else
+        /etc/init.d/isc-dhcp-server restart
+        /etc/init.d/dnsmasq restart
+        /etc/init.d/hostapd restart
+    fi
+    /sbin/iwconfig wlan0 power off
 fi
+
+#Configure eth1 for the access box :
+if [ "\`grep eth1 /etc/network/interfaces \`" == "" ]; then
+    echo "" >> /etc/network/interfaces
+    echo "#IFACE ETH1" >> /etc/network/interfaces
+    echo "allow-hotplug eth1" >> /etc/network/interfaces
+    echo "iface eth1 inet dhcp" >> /etc/network/interfaces
+
+    /sbin/ifdown --force eth1 
+    sleep 2
+    /sbin/ifup --force eth1 
+fi
+
+
+#To accelerate boot time, eth0 is not configured at boot time (due to the time DHCP uses to respond when a wire is not plugged).
+#But we have to configure the interface if a wire is plugged:
+if [ "\`cat /sys/class/net/eth0/carrier 2>/dev/null\`" == "1" ] || [ "\`cat /etc/network/interfaces |grep '^iface eth0' | grep static\`" != "" ]; then
+    /sbin/ifup --force eth0
+else
+    /sbin/ifdown --force eth0
+fi
+
+
+default="no"
+if [ "\`cat /sys/class/net/eth0/carrier 2>/dev/null\`" == "1" ]; then
+    gw="\`grep 'post-up /sbin/route add default gw' /etc/network/interfaces|grep eth0|sed -e 's/post-up //g'\`"
+    if [ "\$gw" != "" ]; then
+        default="yes"
+        eval \$gw
+    fi
+fi
+
+if [ "\`/sbin/ifconfig wlan0 2>/dev/null\`" != "" ] && [ "\$default" == "no" ]; then
+    gw="\`grep 'post-up /sbin/route add default gw' /etc/network/interfaces|grep wlan0|sed -e 's/post-up //g'\`"
+    if [ "\$gw" != "" ]; then
+        eval \$gw
+    fi
+fi
+
+#Configuration of the keymap in FR:
+/usr/bin/loadkeys fr
+
+if [ -f /etc/bulckyconf/system.conf ]; then
+    . /etc/bulckyconf/system.conf
+    if [ "\$CPU_GOUVERNOR" != "" ]; then
+            echo "\$CPU_GOUVERNOR" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    fi
+fi
+
+
+CDATE="\`date +'%Y-%m-%d %H:%M:%S'\`"
+URL_CONN="http://my.bulck.fr"
+HOST_NAME="\`/sbin/ifconfig eth0 | /bin/grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'|/bin/sed -e 's/://g'\`"
+
+
+if [ -f /VERSION ]; then
+    version="version:\`cat /VERSION\`"
+else
+    version="version:000000"
+fi
+
+version="\$version:\`dpkg -l bulck*|grep \\"ii \\"|awk -F \\" \\" '{print \$2":"\$3}'|tr '\\n' ':'\`"
+php_args="last_connect=\$CDATE&mac_address=\$HOST_NAME&version=\\"\$version\\""
+
+wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=20 -t 5 "\$URL_CONN/external/action.php?action=setobject&\$php_args"
+
+echo "nameserver 208.67.222.222" > /etc/resolv.conf
+echo "nameserver 208.67.222.220" >> /etc/resolv.conf
+
+
+exit 0
+EOF
+
+   echo "160609" > /VERSION
+fi
+
 
 
 

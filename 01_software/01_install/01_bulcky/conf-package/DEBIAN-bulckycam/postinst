@@ -23,6 +23,7 @@ if [ -d /etc/bulckycam ]; then
 fi
 
 find /etc/bulckypi/ -name "*-dist" 2>/dev/null|xargs rm 2>/dev/null; echo ""
+/etc/init.d/bulckycam restart
 /etc/init.d/bulckycam force-reload
 
 if [  "`cat /etc/sudoers|grep bulcky|grep fswebcam`" == "" ]; then
