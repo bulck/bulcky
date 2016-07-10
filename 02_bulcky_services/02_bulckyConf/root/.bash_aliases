@@ -1,6 +1,7 @@
 alias bpilog='tail -f /var/log/bulcky/bulckypi.log'
 alias bpislog='tail -f /var/log/bulcky/bulckypi-service.log'
 alias bpireload='/etc/init.d/bulckypi force-reload'
+alias bpirestart='/etc/init.d/bulckypi restart'
 alias bpimysql='mysql -u bulcky -pbulcky bulcky '
 alias bpiupdate='bash -x /etc/cron.daily/bulcky --now --manual'
 
