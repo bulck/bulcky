@@ -7,3 +7,7 @@
 [submodule "02_bulcky_services/01_bulckyPi"]
 	path = 02_bulcky_services/01_bulckyPi
 	url = https://github.com/bulck/bulckyCore.git
+[submodule "01_software/02_src/bulcky/main/plugin/help/bulcky.wiki"]
+        path = 01_software/02_src/bulcky/main/plugin/help/bulcky.wiki
+        url = https://github.com/bulck/bulcky.wiki.git
+
