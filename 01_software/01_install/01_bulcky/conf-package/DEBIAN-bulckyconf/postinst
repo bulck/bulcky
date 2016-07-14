@@ -597,6 +597,7 @@ wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=20 -t 5 "\$URL_CON
 echo "nameserver 208.67.222.222" > /etc/resolv.conf
 echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 
+/usr/sbin/ntpd -q -g
 
 exit 0
 EOF
