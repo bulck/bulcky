@@ -233,10 +233,10 @@ EOF
             rm -Rf /tmp/bulcky/*
            fi
            mkdir -p /tmp/bulcky/bulckydoc
-           mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main
+           mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main/plugin/help
 
            cp -R ./conf-package/DEBIAN-bulckydoc /tmp/bulcky/bulckydoc/DEBIAN
-           cp -R ../../02_src/bulcky/main/plugin/help/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/
+           cp -R ../../02_src/bulcky/main/plugin/help/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/plugin/help/
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckydoc/DEBIAN/control
            find /tmp/bulcky/bulckydoc/ -name ".git*"|xargs rm -Rf

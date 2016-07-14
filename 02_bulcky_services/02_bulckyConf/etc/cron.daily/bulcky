@@ -58,7 +58,7 @@ for pack in $PACKAGES; do
     if [ "`apt-get -u upgrade --assume-no|grep $pack`" != "" ]; then
         echo "--> Upgrading $pack package..."
 	    sleep 2
-        apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" $pack
+        apt-get install -y  --force-yes --only-upgrade -o Dpkg::Options::="--force-overwrite" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confmiss" $pack
         echo "--> ...ok"
     elif [ "`dpkg -s $pack 2>/dev/null|grep Version`" == "" ]; then
         echo "--> Installing $pack package..."
