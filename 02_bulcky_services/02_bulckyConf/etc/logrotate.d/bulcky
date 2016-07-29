@@ -1,4 +1,4 @@
-/var/log/bulcky/bulckypi-service.log /var/log/bulcky/bulcky-services.log {
+/var/log/bulcky/bulckypi.log  /var/log/bulcky/bulckypi-service.log  /var/log/bulcky/bulcky-services.log {
     daily
     rotate 30
     size 20M
@@ -14,3 +14,4 @@
         fi; \
     endscript
 }
+
