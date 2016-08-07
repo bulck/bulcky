@@ -513,7 +513,7 @@ EOF
 fi
 
 
-if [ "$VERSION" -lt  160806 ]; then
+if [ "$VERSION" -lt  160807 ]; then
 
     cat << EOF > /etc/rc.local
 #!/bin/bash 
@@ -521,6 +521,10 @@ if [ "$VERSION" -lt  160806 ]; then
 #Reconfigure wlan0 at boot:
 if [ "\`/sbin/ifconfig wlan0\`" != "" ]; then
     if [ "\`/bin/grep 10.0.0.100 /etc/network/interfaces\`" == "" ]; then
+        /etc/init.d/isc-dhcp-server stop
+        /etc/init.d/dnsmasq stop
+        /etc/init.d/hostapd stop
+
         /bin/ping -c 1 8.8.8.8 >/dev/null 2>&1
         if [ \$? -ne 0 ]; then
             /sbin/ifdown --force wlan0
@@ -610,7 +614,7 @@ echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 exit 0
 EOF
 
-   echo "160806" > /VERSION
+   echo "160807" > /VERSION
 fi
 
 
