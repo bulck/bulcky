@@ -5,18 +5,18 @@ function usage {
     echo "    --list : list media available"
     echo "    --takePhoto : take a photo"
     echo ""
-    echo "Note: you have to fill the /etc/bulckyconf/gopro_cam.sh file"
+    echo "Note: you have to fill the /etc/bulckycam/appGoPro.conf file"
     echo "      to enable this script"
     return 0
 }
 
 
 
-if [ ! -f /etc/bulckyconf/gopro_cam.conf ]; then
+if [ ! -f /etc/bulckycam/appGoPro.conf ]; then
     exit 1
 fi
 
-. /etc/bulckyconf/gopro_cam.conf
+. /etc/bulckycam/appGoPro.conf
 
 if [ "$GOPRO_VERSION" == "" ] || [ "$GOPRO_MAC" == "" ]; then
     exit 2
