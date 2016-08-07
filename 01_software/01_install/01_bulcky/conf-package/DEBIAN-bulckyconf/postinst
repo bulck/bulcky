@@ -509,6 +509,12 @@ EOF
 
     fi
 
+     echo "160609" > /VERSION
+fi
+
+
+if [ "$VERSION" -lt  160806 ]; then
+
     cat << EOF > /etc/rc.local
 #!/bin/bash 
 
@@ -597,12 +603,14 @@ wget -O - --quiet --retry-connrefused --waitretry=1 --timeout=20 -t 5 "\$URL_CON
 echo "nameserver 208.67.222.222" > /etc/resolv.conf
 echo "nameserver 208.67.222.220" >> /etc/resolv.conf
 
+/usr/sbin/service ntp stop
 /usr/sbin/ntpd -q -g
+/usr/sbin/service ntp start
 
 exit 0
 EOF
 
-   echo "160609" > /VERSION
+   echo "160806" > /VERSION
 fi
 
 
