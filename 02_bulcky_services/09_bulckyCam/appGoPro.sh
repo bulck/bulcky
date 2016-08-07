@@ -35,21 +35,37 @@ case "$1" in
         fi 
         /usr/bin/wget -q -O -  http://10.5.5.9:8080/gp/gpMediaList        
     ;;
-    --takePhoto)  
-        if [ "$GOPRO_VERSION" == "SESSION" ]; then
-            /usr/bin/wakeonlan -i 10.5.5.9 -p 9 $GOPRO_MAC
-        fi 
-        /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/mode?p=1 -O - >/dev/null
-        if [ $? -eq 0 ]; then
-            /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/shutter?p=1 -O - >/dev/null
-            if [ $? -ne 0 ]; then
-                exit 5
+     --takePhoto)  
+        i="0"
+        error="0"
+
+        while [ $i -lt 2 ]; do
+            if [ "$GOPRO_VERSION" == "SESSION" ]; then
+                /usr/bin/wakeonlan -i 10.5.5.9 -p 9 $GOPRO_MAC
+            fi  
+
+            /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/mode?p=1 -O - >/dev/null
+            if [ $? -eq 0 ]; then
+                /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/shutter?p=1 -O - >/dev/null
+                if [ $? -ne 0 ]; then
+                    error="1"
+                else
+                    echo "--> A new photo has been taken"
+                    exit 0
+                fi
             else
-                echo "--> A new photo has been taken"
+                error="1" 
             fi
-        else
-            exit 4
-        fi
+
+            if [ "$error" == "1" ]; then
+                error="0"
+                sudo /sbin/ifdown wlan0
+                sleep 2
+                sudo /sbin/ifup wlan0
+            fi
+
+            i=$[$i+1]
+        done
     ;;
     *) usage
    ;;
