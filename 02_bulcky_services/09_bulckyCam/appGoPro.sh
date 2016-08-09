@@ -29,46 +29,93 @@ fi
 
 
 case "$1" in
-    --list)  
+    --list)
+        echo "--> Getting media list at `date`"
+        if [ "$GOPRO_VERSION" == "SESSION" ]; then
+            /usr/bin/wakeonlan  -i 10.5.5.9 -p 9 $GOPRO_MAC
+        fi
+
+        i="0"
+        error="1"
+        while [ $i -lt 2 ]; do
+            i=$[$i+1]
+            ping -c 3 10.5.5.9 >/dev/null
+            if [ $? -ne 0 ]; then
+                ifdown wlan0
+                sleep 2
+                ifup wlan0
+                sleep 2
+            else
+                error="0";
+                break;
+            fi
+        done
+
+        if [ $error -eq 0 ]; then
+            /usr/bin/wget -q -O -  http://10.5.5.9/gp/gpMediaList
+        fi
+        echo "-----"
+    ;;
+    --takePhoto)
+        i="0"
+        error="1"
+
+        exec 2>&1
+        exec > >(logger -t "appGoPro : ")
+
         if [ "$GOPRO_VERSION" == "SESSION" ]; then
             /usr/bin/wakeonlan -i 10.5.5.9 -p 9 $GOPRO_MAC
-        fi 
-        /usr/bin/wget -q -O -  http://10.5.5.9:8080/gp/gpMediaList        
-    ;;
-     --takePhoto)  
-        i="0"
-        error="0"
+        fi
 
         while [ $i -lt 2 ]; do
-            if [ "$GOPRO_VERSION" == "SESSION" ]; then
-                /usr/bin/wakeonlan -i 10.5.5.9 -p 9 $GOPRO_MAC
-            fi  
-
-            /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/mode?p=1 -O - >/dev/null
-            if [ $? -eq 0 ]; then
-                /usr/bin/wget -q http://10.5.5.9/gp/gpControl/command/shutter?p=1 -O - >/dev/null
-                if [ $? -ne 0 ]; then
-                    error="1"
-                else
-                    echo "--> A new photo has been taken"
-                    exit 0
-                fi
-            else
-                error="1" 
-            fi
-
-            if [ "$error" == "1" ]; then
-                error="0"
-                sudo /sbin/ifdown wlan0
-                sleep 2
-                sudo /sbin/ifup wlan0
-            fi
-
             i=$[$i+1]
+            ping -c 3 10.5.5.9 >/dev/null
+            if [ $? -ne 0 ]; then
+                ifdown wlan0
+                sleep 2
+                ifup wlan0
+                sleep 2
+            else
+                error="0";
+                break;
+            fi
         done
+
+        if [ $error -eq 0 ]; then
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/10/0" >/dev/null
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/21/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/34/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/19/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/54/0"
+            sleep 3
+            /usr/bin/wget -q -O - " http://10.5.5.9/gp/gpControl/setting/50/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/21/1"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/22/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/setting/23/0"
+            sleep 3
+            wget -q -O - "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=1&sub_mode=1"
+            sleep 3
+            wget -q -O - "http://10.5.5.9/gp/gpControl/setting/19/0"
+            sleep 3
+            /usr/bin/wget -q -O - "http://10.5.5.9/gp/gpControl/command/shutter?p=1" > /dev/null
+
+            if [ $? -ne 0 ]; then
+                exit 4
+            else
+                 echo "--> A new photo has been taken"
+            fi
+        fi
     ;;
     *) usage
    ;;
 esac
 
 exit 0
+
