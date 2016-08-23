@@ -9,5 +9,6 @@ if [ -f /etc/init.d/bulckyraz ]; then
     update-rc.d bulckyraz defaults
     chown bulcky:bulcky /etc/init.d/bulckyraz
     chmod 744 /etc/init.d/bulckyraz
+    /etc/init.d/bulckyraz restart
     /etc/init.d/bulckyraz force-reload
 fi

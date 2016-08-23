@@ -45,7 +45,7 @@ fi
 
 # Remove git pull when using jenkins
 if [ "$3" == "up" ]; then
-    (cd ../../../ && git pull && cd 01_software/02_src/bulcky/main/bulcky.wiki/ && git pull && cd ../../../02_bulcky_services/01_bulckyPi/ && git pull)
+    (cd ../../../ && git pull && cd 01_software/02_src/bulcky/main/plugin/help/bulcky.wiki/ && git pull && cd ../../../02_bulcky_services/01_bulckyPi/ && git pull)
 fi
 
 revision=`date +%y%m%d%H%M`
@@ -96,7 +96,7 @@ case "$1" in
 
            cp -R ../../02_src/bulcky /tmp/bulcky/bulckyface/var/www/bulcky
 		   cp -R ../../02_src/mobile /tmp/bulcky/bulckyface/var/www/mobile
-           rm -Rf /tmp/bulcky/bulckyface/var/www/bulcky/main/bulcky.wiki
+           rm -Rf /tmp/bulcky/bulckyface/var/www/bulcky/main/plugin/help/bulcky.wiki
 
            cp conf-package/lgpl3.txt /tmp/bulcky/bulckyface/var/www/bulcky/LICENSE
            cat > /tmp/bulcky/bulckyface/var/www/bulcky/sql_install/my-extra.cnf << "EOF" 
@@ -233,10 +233,10 @@ EOF
             rm -Rf /tmp/bulcky/*
            fi
            mkdir -p /tmp/bulcky/bulckydoc
-           mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main
+           mkdir -p /tmp/bulcky/bulckydoc/var/www/bulcky/main/plugin/help
 
            cp -R ./conf-package/DEBIAN-bulckydoc /tmp/bulcky/bulckydoc/DEBIAN
-           cp -R ../../02_src/bulcky/main/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/
+           cp -R ../../02_src/bulcky/main/plugin/help/bulcky.wiki /tmp/bulcky/bulckydoc/var/www/bulcky/main/plugin/help/
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckydoc/DEBIAN/control
            find /tmp/bulcky/bulckydoc/ -name ".git*"|xargs rm -Rf

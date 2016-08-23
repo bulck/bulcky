@@ -36,4 +36,5 @@ fi
 
 
 find /etc/bulckypi/ -name "*-dist"|xargs rm 2>/dev/null; echo ""
+/etc/init.d/bulckypi restart
 /etc/init.d/bulckypi force-reload
