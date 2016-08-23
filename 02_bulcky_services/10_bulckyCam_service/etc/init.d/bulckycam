@@ -15,29 +15,29 @@ PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMONUSER="bulcky"
 DEAMON_NAME="bulckycam"
 
-. /lib/lsb/init-functions
+#. /lib/lsb/init-functions
 
 d_start () {
-        log_daemon_msg "Starting system $DEAMON_NAME service"
+        #log_daemon_msg "Starting system $DEAMON_NAME service"
 		if [ "`ps ax|grep bulckyCam.tcl|grep tclsh`" != "" ]; then
             echo -n  "\n[ ok ] $DEAMON_NAME service is already running.\n"
             exit 0
         else
 			sudo -u $DAEMONUSER nohup /usr/bin/tclsh "/opt/bulckycam/bulckyCam.tcl" "/etc/bulckycam/conf.xml" >>/var/log/bulcky/bulcky-services.log 2>&1 &
 			sleep 4
-			log_end_msg $?
+			#log_end_msg $?
 		fi
 }
 
 d_stop () {
-        log_daemon_msg "Stopping system $DEAMON_NAME Daemon"
+        #log_daemon_msg "Stopping system $DEAMON_NAME Daemon"
         for pid in "`ps ax|grep bulckyCam.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
             if [ "$pid" != "" ]; then
                 kill -9 $pid
             fi
         done
         sleep 1
-        log_end_msg $?
+        #log_end_msg $?
 }
 
 case "$1" in
