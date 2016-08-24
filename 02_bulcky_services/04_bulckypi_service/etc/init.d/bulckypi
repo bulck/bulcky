@@ -15,25 +15,23 @@ PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMONUSER="bulcky"
 DEAMON_NAME="bulckypi"
 
-#. /lib/lsb/init-functions
+
 
 d_start () {
-    #log_daemon_msg "Starting system $DEAMON_NAME service"
+    echo "Starting system $DEAMON_NAME service"
 	if [ "`ps ax|grep bulckyPi.tcl|grep tclsh`" != "" ]; then
         echo -n  "\n[ ok ] $DEAMON_NAME service is already running.\n"
         exit 0
     else
 		sudo -u $DAEMONUSER nohup /usr/bin/tclsh "/opt/bulckypi/bulckyPi/bulckyPi.tcl" "/etc/bulckypi" >>/var/log/bulcky/bulckypi-service.log 2>&1 &
 		sleep 4
-		#log_end_msg $?
 	fi
 }
 
 d_stop () {
-    #log_daemon_msg "Stopping system $DEAMON_NAME Daemon"
+    echo "Stopping system $DEAMON_NAME Daemon"
     tclsh /opt/bulckypi/bulckyPi/bulckyPistop.tcl
     sleep 1
-    #log_end_msg $?
 }
 
 case "$1" in
