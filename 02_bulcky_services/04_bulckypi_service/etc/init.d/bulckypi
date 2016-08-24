@@ -58,11 +58,7 @@ case "$1" in
                 kill -9 $pid
             fi
         done
-        for pid in "`ps ax|grep serveur |grep tclsh |awk -F " " '{print $1}'`"; do
-            if [ "$pid" != "" ]; then
-                kill -9 $pid
-            fi
-        done
+
         for pid in "`ps ax|grep bulckyPi.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
             if [ "$pid" != "" ]; then
                 kill -9 $pid
@@ -77,11 +73,7 @@ case "$1" in
                 kill -9 $pid
             fi
         done
-        for pid in "`ps ax|grep serveur |grep tclsh |awk -F " " '{print $1}'`"; do
-            if [ "$pid" != "" ]; then
-                kill -9 $pid
-            fi
-        done
+
         for pid in "`ps ax|grep bulckyPi.tcl |grep tclsh |awk -F " " '{print $1}'`"; do
             if [ "$pid" != "" ]; then
                 kill -9 $pid
