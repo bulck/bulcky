@@ -28,7 +28,7 @@ if len(sys.argv) > 1:
 	print "List Ok"
 	
 	fileBaseName = os.path.basename(x)
-	cmd = "avconv -r 10 -i %s%s.jpg -r 10 -vcodec libx264 -crf 20 -g 15 /home/bulcky/FTP/upldReady/%s.mp4"%(x[:-12],'%5d',fileBaseName[:-13])
+	cmd = "avconv -r 10 -i %s%s.jpg -r 10 -vcodec libx264 -crf 20 -g 15 /home/bulcky/FTP/files/upldReady/%s.mp4"%(x[:-12],'%5d',fileBaseName[:-13])
 	print cmd
 	os.system(cmd)
 

@@ -9,7 +9,7 @@ import glob
 import ftplib
 import os
 
-ftpLocalPath = "/home/bulcky/FTP/upldReady/*.*"
+ftpLocalPath = "/home/bulcky/FTP/files/upldReady/*.*"
 
 host="ftp.greenbox-botanic.com"
 user="SLF_GLH@pyagreen.com"
