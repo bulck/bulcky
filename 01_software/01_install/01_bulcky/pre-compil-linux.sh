@@ -6,14 +6,15 @@ cd $dir
 
 function usage {
             echo "usage: $0"
-            echo "                      bulckypi    <version>|version ?jenkins?"
-            echo "                      bulckyface  <version>|version ?jenkins?"
-            echo "                      bulckyraz   <version>|version ?jenkins?"
-            echo "                      bulckytime  <version>|version ?jenkins?"
-            echo "                      bulckyconf  <version>|version ?jenkins?"
-            echo "                      bulckydoc   <version>|version ?jenkins?"
-            echo "                      bulckycam   <version>|version ?jenkins?"
-            echo "                      apt-gen"
+            echo "                      bulckypi        <version>|version ?jenkins?"
+            echo "                      bulckyface      <version>|version ?jenkins?"
+            echo "                      bulckyraz       <version>|version ?jenkins?"
+            echo "                      bulckytime      <version>|version ?jenkins?"
+            echo "                      bulckyconf      <version>|version ?jenkins?"
+            echo "                      bulckydoc       <version>|version ?jenkins?"
+            echo "                      bulckycam       <version>|version ?jenkins?"
+            echo "                      bulckyCamAxis   <version>|version ?jenkins?"
+	    echo "                      apt-gen"
             echo "                      clean"
             exit 1
 }
@@ -36,7 +37,9 @@ if [ "$2" == "version" ]; then
     elif [ "$1" == "bulckyconf" ]; then
         VERSION=`cat ../../../02_bulcky_services/02_bulckyConf/VERSION`
     elif [ "$1" == "bulckycam" ]; then
-        VERSION=`cat ../../../02_bulcky_services/09_bulckyCam/VERSION`
+        VERSION=`cat ../../../02_bulcky_services/09_bulckyCam/VERSION` 
+    elif [ "$1" == "bulckyCamAxis" ]; then
+	VERSION=`cat ../../../02_bulcky_services/11_bulckyCamAxis/VERSION` 
     fi
 else
     VERSION=$2
@@ -282,6 +285,34 @@ EOF
 
            mv bulckycam.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckycam-armhf_`echo $VERSION`-r`echo $revision`.deb
       ;;
+      "bulckyCamAxis")
+	   debug="$3"
+
+           if [ -d /tmp/bulcky ]; then
+            rm -Rf /tmp/bulcky/*
+           fi
+
+           mkdir -p /tmp/bulcky/bulckyCamAxis
+           cp -R ./conf-package/DEBIAN-bulckyCamAxis /tmp/bulcky/bulckyCamAxis/DEBIAN
+
+           cp -R ../../../02_bulcky_services/11_bulckyCamAxis/* /tmp/bulcky/bulckycam/
+           rm -f /tmp/bulcky/bulckyCamAxis/VERSION
+
+           sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyCamAxis/DEBIAN/control
+           find /tmp/bulcky/bulckyCamAxis/ -name ".git*"|xargs rm -Rf
+
+           if [ "$debug" ==  "true" ]; then
+                sed -i "3i\set -x" /tmp/bulcky/bulckyCamAxis/DEBIAN/postinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyCamAxis/DEBIAN/postrm
+                sed -i "3i\set -x" /tmp/bulcky/bulckyCamAxis/DEBIAN/preinst
+                sed -i "3i\set -x" /tmp/bulcky/bulckyCamAxis/DEBIAN/prerm
+           fi
+
+           cd /tmp/bulcky/ && dpkg-deb --build bulckyCamAxis
+
+           mv bulckyCamAxis.deb /var/lib/jenkins/workspace/bulcky_createPackage/01_software/01_install/01_bulcky/Output/bulckyCamAxis-armhf_`echo $VERSION`-r`echo $revision`.deb
+      ;;
+	
       "apt-gen")
            bulckypi="`ls -t Output/bulckypi*|head -1`"
            cp $bulckypi repository/binary/
@@ -303,6 +334,9 @@ EOF
 
            bulckycam="`ls -t Output/bulckycam*|head -1`"
            cp $bulckycam repository/binary/
+
+           bulckyCamAxis="`ls -t Output/bulckyCamAxis*|head -1`"
+           cp $bulckyCamAxis repository/binary/
 
            cd repository
            dpkg-scanpackages binary /dev/null | gzip -9c > binary/Packages.gz

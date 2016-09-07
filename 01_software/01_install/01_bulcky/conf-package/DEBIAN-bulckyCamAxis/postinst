@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -d /opt/bulckyCamAxis ]; then
+    chown -R bulcky:bulcky /opt/bulckyCamAxis
+fi
+
+find /etc/bulckypi/ -name "*-dist" 2>/dev/null|xargs rm 2>/dev/null; echo ""
+
+if [ -d /home/bulcky/FTP/files/upldReady ]; then 
+    mkdir -p /home/bulcky/FTP/files/upldReady
+fi
+
+chmod -R 555 /home/bulcky/FTP
+chmod -R 755 /home/bulcky/FTP/files
+chown -R bulcky /home/bulcky/FTP/files
+chmod -R 755 /home/bulcky/FTP/files/upldReady
+chown -R bulcky /home/bulcky/FTP/files/upldReady
+
+

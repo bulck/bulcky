@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$1" == "purge" ] || [ "$1" == "remove" ]; then
+    if [ -d /opt/bulckyCamAxis ]; then
+        rm -Rf /opt/bulckyCamAxis
+    fi
+fi
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGES="bulckypi bulckyface bulckyraz bulckytime bulckydoc bulckytime bulckyconf"
+PACKAGES="bulckypi bulckyface bulckyraz bulckytime bulckydoc bulckytime bulckyconf bulckyCamAxis"
 
 
 function check_package_manager {
