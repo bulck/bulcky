@@ -294,7 +294,10 @@ EOF
 
            mkdir -p /tmp/bulcky/bulckyCamAxis
            cp -R ./conf-package/DEBIAN-bulckyCamAxis /tmp/bulcky/bulckyCamAxis/DEBIAN
-	   chmod 755 /tmp/bulcky/bulckyCamAxis/DEBIAN/*.sh
+	   chmod 755 /tmp/bulcky/bulckyCamAxis/DEBIAN/postinst  
+	   chmod 755 /tmp/bulcky/bulckyCamAxis/DEBIAN/postrm 
+	   chmod 755 /tmp/bulcky/bulckyCamAxis/DEBIAN/preinst
+	   chmod 755 /tmp/bulcky/bulckyCamAxis/DEBIAN/prerm
 
            cp -R ../../../02_bulcky_services/11_bulckyCamAxis/* /tmp/bulcky/bulckyCamAxis/
            rm -f /tmp/bulcky/bulckyCamAxis/VERSION
