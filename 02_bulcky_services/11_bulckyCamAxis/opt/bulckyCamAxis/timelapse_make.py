@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # timelapse_make.py ipAddr 
-# Permet la fabrication d'un timelapse pour la camera définie par ipAddr
-# à partir des images récupérées via get_img.py (pour cette camera)
-# La sequence obtenue est laissée sur le FTP local pour futur upload
+# Permet la fabrication d'un timelapse pour la camera definie par ipAddr
+# a partir des images recuperees via get_img.py (pour cette camera)
+# La sequence obtenue est laissee sur le FTP local pour futur upload
 # via cloud_send.p
 
 import glob
