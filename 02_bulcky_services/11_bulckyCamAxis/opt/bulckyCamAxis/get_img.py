@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 # get_img.py ipAddr 
-# Permet l'acquisition d'une image sur la camera définie par ipAddr
-# La camera dépose l'image sur le serveur FTP du Pi pour construction du timelapse
+# Permet l'acquisition d'une image sur la camera definie par ipAddr
+# La camera depose l'image sur le serveur FTP du Pi pour construction du timelapse
 
 import sys
 import requests
