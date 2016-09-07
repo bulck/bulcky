@@ -295,7 +295,7 @@ EOF
            mkdir -p /tmp/bulcky/bulckyCamAxis
            cp -R ./conf-package/DEBIAN-bulckyCamAxis /tmp/bulcky/bulckyCamAxis/DEBIAN
 
-           cp -R ../../../02_bulcky_services/11_bulckyCamAxis/* /tmp/bulcky/bulckycam/
+           cp -R ../../../02_bulcky_services/11_bulckyCamAxis/* /tmp/bulcky/bulckyCamAxis/
            rm -f /tmp/bulcky/bulckyCamAxis/VERSION
 
            sed -i "s/Version: .*/Version: `echo $VERSION`-r`echo $revision`/g" /tmp/bulcky/bulckyCamAxis/DEBIAN/control
