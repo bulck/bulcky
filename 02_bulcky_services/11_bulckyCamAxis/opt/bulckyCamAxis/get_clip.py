@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 # get_clip.py ipAddr S
-# Permet l'acquisition d'un clip de S secondes sur la camera définie par ipAddr
-# La camera dépose le clip video sur le serveur FTP du Pi
+# Permet l'acquisition d'un clip de S secondes sur la camera definie par ipAddr
+# La camera depose le clip video sur le serveur FTP du Pi
 
 import sys
 import requests
