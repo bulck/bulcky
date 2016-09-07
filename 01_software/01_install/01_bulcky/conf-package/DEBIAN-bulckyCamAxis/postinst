@@ -6,7 +6,7 @@ fi
 
 find /etc/bulckypi/ -name "*-dist" 2>/dev/null|xargs rm 2>/dev/null; echo ""
 
-if [ -d /home/bulcky/FTP/files/upldReady ]; then 
+if [ ! -d /home/bulcky/FTP/files/upldReady ]; then 
     mkdir -p /home/bulcky/FTP/files/upldReady
 fi
 
