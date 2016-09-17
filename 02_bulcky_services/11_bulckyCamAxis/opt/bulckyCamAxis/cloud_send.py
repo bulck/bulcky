@@ -25,8 +25,6 @@ def main():
     parser.add_option("-p", "--password", dest="passw",
                       action="store", type="string",
                       help="Adresse IP de la caméra")
-                      
-    ftpLocalPath = "/home/bulcky/FTP/files/upldReady/*.*"
 
     (options, args) = parser.parse_args()
 
