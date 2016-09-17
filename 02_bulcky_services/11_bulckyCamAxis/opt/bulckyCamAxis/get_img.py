@@ -35,9 +35,6 @@ def main():
         parser.error("options -u or --user is mandatory")
     if not options.passw :
         parser.error("options -p or --password is mandatory")
-        
-    user="root"
-    passw="_bulck38_"
 
     print "Get one image from camera " + options.ip
 
