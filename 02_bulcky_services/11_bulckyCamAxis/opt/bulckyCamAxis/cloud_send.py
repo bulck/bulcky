@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 # Envoi du contenu du repertoire local ftpLocalPath (Rep FTP local du Pi)
 # au serveur FTP web
@@ -24,10 +25,10 @@ session = ftplib.FTP(host,user,passw)
 
 for x in fileToUpld:
     print "STOR "+ os.path.basename(x)
-	file = open(x,'rb')
-	session.storbinary("STOR "+ os.path.basename(x), file)     
-	file.close()                                    
-	os.system("rm %s"%(x))
+    file = open(x,'rb')
+    session.storbinary("STOR "+ os.path.basename(x), file)     
+    file.close()                                    
+    os.system("rm %s"%(x))
 
 
                  
