@@ -7,7 +7,7 @@
     a partir des images recuperees via get_img.py (pour cette camera)
     La sequence obtenue est laissee sur le FTP local pour futur upload via cloud_send.py
     
-    python /opt/bulckyCamAxis/timelapse_make.py -i 192.168.1.100 -d
+    python /opt/bulckyCamAxis/timelapse_make.py -d /home/bulcky/FTP/files/192.168.1.101_16-09-17/ -r
     
 """
 # timelapse_make.py ipAddr 
@@ -28,69 +28,44 @@
 
 import glob
 import os
+from os import listdir, stat
+from os.path import isfile, join
 import sys
 from optparse import OptionParser
-
+import shutil
 
 def main():
-    # On cré le parser pour les parametres en entrée
+    # On crée le parser pour les parametres en entrée
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-i", "--ip", dest="ip",
-                      action="store", type="string",
-                      help="Adresse IP de la caméra")
-    parser.add_option("-d", "--delete", dest="delete",
+    parser.add_option("-r", "--remove", dest="remove",
                       action="store_false", default=False,
                       help="supprime les fichiers")
+    parser.add_option("-d", "--directory", dest="directory",
+                      action="store", type="string",
+                      help="Adresse du dossier")
 
     (options, args) = parser.parse_args()
 
-    # L'adresse IP doit être transmise
-    if not options.ip :
-        parser.error("options -i or --ip is mandatory")
+    # Le dossier doit être transmit
+    if not options.directory :
+        parser.error("options -d or --directory is mandatory")
 
-    timelapseFiles = []
-
-    print "Prepare all images from camera " + options.ip
-    
-    # Le répertoire qui contient les images 
-    jpgLocalPath = "/home/bulcky/FTP/files/" + options.ip + "*.jpg"
-
-    # On liste les images présentes
-    timelapseFiles = glob.glob(jpgLocalPath)
-    
-    # On les tries par ordre alphabétique
-    timelapseFiles.sort()
-    
-    
-    # On renomme les images pour qu'elles aient le bon format
-    # mv /home/bulcky/FTP/files/192.168.1.100_17-09-16-14-50-06.jpg /home/bulcky/FTP/files/192.168.1.100-00001.jpg
-    i=1
-    for fileName in timelapseFiles:
-        newFilename = fileName[:36] + "-" + str(i).zfill(5) + fileName[-4:]
-        cmdToExecute = "mv " + fileName + " " + newFilename
-        i=i+1
-        # On ne copie que les fichiers qui ont un nom différent
-        if newFilename != fileName :
-            print(cmdToExecute)
-            os.system(cmdToExecute)
-
-    print "List Ok"
 
     # On lance la création de la vidéo
-    fileBaseName = os.path.basename(fileName)
-    cmd = "avconv -r 10 -i " + fileName[:36] + "-%5d.jpg -r 10 -vcodec libx264 -crf 28 -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName[:22] + ".mp4"
+    fileBaseName = os.path.basename(os.path.normpath(options.directory))
+    
+    # Exemple avconv -r 10 -i 192.168.1.100-%5d.jpg -vcodec libx264 -crf 28 -g 15 192.168.1.100.mp4
+    # -b 1024k -g 15
+    cmd = "avconv -r 10 -i " + options.directory + "%5d.jpg -r 10 -vcodec libx264 -b 1024k -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName + ".mp4"
     print cmd
     os.system(cmd)
 
     # On supprime les images
-    if options.delete :
-        print "TimeLapse done removing files..."
-        timelapseFiles = glob.glob(jpgLocalPath)
-        for fileName in timelapseFiles:
-            os.system("rm %s"%(fileName))
-
+    if options.remove :
+        print "Suppression du dossier ..."
+        shutil.rmtree(options.directory)
 
 if __name__ == '__main__':
     main()
