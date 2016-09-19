@@ -1,9 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# get_img.py ipAddr 
-# Permet l'acquisition d'une image sur la camera definie par ipAddr
-# La camera depose l'image sur le serveur FTP du Pi pour construction du timelapse
+"""
+    Permet l'acquisition d'une image sur la camera definie par ipAddr
+    La camera depose l'image sur le serveur FTP du Pi pour construction du timelapse
+
+    python /opt/bulckyCamAxis/get_img.py -i 192.168.1.101 -u user -p password
+    
+"""
+
 
 import sys
 import requests

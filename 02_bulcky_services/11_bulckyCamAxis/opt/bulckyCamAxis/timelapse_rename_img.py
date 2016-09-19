@@ -67,10 +67,6 @@ def main():
         heure = dividedName[-4]
         minute = dividedName[-3]
 
-        # Si le c'est je our actuel, on passe 
-        if jour == jourActuel :
-            continue
-
         # On crée la chaine de date pour l'affichage dans imagemagick
         IP = dividedName[-11] + "." + dividedName[-10] + "." + dividedName[-9] + "." + dividedName[-8]
         dateStr = jour + "/" + mois + "/20" + annee + " " + heure + ":" + minute

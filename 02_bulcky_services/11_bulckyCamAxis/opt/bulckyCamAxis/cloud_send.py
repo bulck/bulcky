@@ -1,9 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Envoi du contenu du repertoire local ftpLocalPath (Rep FTP local du Pi)
-# au serveur FTP web
+"""
+    Envoi du contenu du repertoire local ftpLocalPath (Rep FTP local du Pi) au serveur FTP web
 
+    python /opt/bulckyCamAxis/cloud_send.py -f FTPHOST -u USERNAME -p PASSWORD
+    
+"""
 
 
 import glob

@@ -10,6 +10,7 @@
     python /opt/bulckyCamAxis/timelapse_make.py -d /home/bulcky/FTP/files/192.168.1.101_16-09-17/ -r
     
 """
+
 # timelapse_make.py ipAddr 
 
 # Les options d'avconv (utilisé pour faire la convertion) (https://libav.org/documentation/avconv.html)
@@ -52,20 +53,35 @@ def main():
     if not options.directory :
         parser.error("options -d or --directory is mandatory")
 
-
-    # On lance la création de la vidéo
-    fileBaseName = os.path.basename(os.path.normpath(options.directory))
+    # On liste les dossiers présents 
+    listFolder = [f for f in listdir(options.directory) if not isfile(join(options.directory, f))]
     
-    # Exemple avconv -r 10 -i 192.168.1.100-%5d.jpg -vcodec libx264 -crf 28 -g 15 192.168.1.100.mp4
-    # -b 1024k -g 15
-    cmd = "avconv -r 10 -i " + options.directory + "%5d.jpg -r 10 -vcodec libx264 -b 1024k -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName + ".mp4"
-    print cmd
-    os.system(cmd)
+    # On eneleve deux dossiers
+    if "save" in listFolder:
+        listFolder.remove("save")
+    if "upldReady" in listFolder:
+        listFolder.remove("upldReady")
 
-    # On supprime les images
-    if options.remove :
-        print "Suppression du dossier ..."
-        shutil.rmtree(options.directory)
+    # S'il y a un dossier
+    if listFolder:
+        
+        for folderI in listFolder:
+        
+            directoyrName = options.directory + "/" + folderI + "/"
+        
+            # On lance la création de la vidéo
+            fileBaseName = os.path.basename(os.path.normpath(directoyrName))
+            
+            # Exemple avconv -r 10 -i 192.168.1.100-%5d.jpg -vcodec libx264 -crf 28 -g 15 192.168.1.100.mp4
+            # -b 1024k -g 15
+            cmd = "avconv -r 10 -i " + directoyrName + "%5d.jpg -r 10 -vcodec libx264 -b 1024k -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName + ".mp4"
+            print cmd
+            os.system(cmd)
+
+            # On supprime les images
+            if options.remove :
+                print "Suppression du dossier ..."
+                shutil.rmtree(directoyrName)
 
 if __name__ == '__main__':
     main()
