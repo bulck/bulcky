@@ -74,7 +74,7 @@ def main():
             
             # Exemple avconv -r 10 -i 192.168.1.100-%5d.jpg -vcodec libx264 -crf 28 -g 15 192.168.1.100.mp4
             # -b 1024k -g 15
-            cmd = "avconv -r 10 -i " + directoyrName + "%5d.jpg -r 10 -vcodec libx264 -b 1024k -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName + ".mp4"
+            cmd = "avconv -r 10 -i " + directoyrName + "%5d.jpg -r 10 -vcodec libx264 -b 2048k -g 15 /home/bulcky/FTP/files/upldReady/" + fileBaseName + ".mp4"
             print cmd
             os.system(cmd)
 
