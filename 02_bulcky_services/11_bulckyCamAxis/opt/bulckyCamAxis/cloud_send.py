@@ -45,14 +45,11 @@ def main():
 
     fileToUpld = glob.glob(ftpLocalPath)
 
-    session = ftplib.FTP(options.ftphost,options.user,options.passw)
-
     for x in fileToUpld:
-        print "STOR "+ os.path.basename(x)
-        file = open(x,'rb')
-        session.storbinary("STOR "+ os.path.basename(x), file)     
-        file.close()                                    
-        os.system("rm %s"%(x))
+        print "Envoi " +  x + "vers FTP " + os.path.basename(x)
+        os.system("curl -u " + options.user + ":" + options.passw + " -T " + x + " ftp://" + options.ftphost + "/002/" + os.path.basename(x))
+        print "suppression fichier"
+        os.system("rm " + x)
 
     print "session quit"
     session.quit()

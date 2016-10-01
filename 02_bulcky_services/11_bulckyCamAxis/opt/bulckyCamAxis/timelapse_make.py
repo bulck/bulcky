@@ -68,6 +68,7 @@ def main():
         for folderI in listFolder:
         
             directoyrName = options.directory + "/" + folderI + "/"
+            directoyrNameSansSlash = options.directory + "/" + folderI
         
             # On lance la création de la vidéo
             fileBaseName = os.path.basename(os.path.normpath(directoyrName))
@@ -81,7 +82,7 @@ def main():
             # On supprime les images
             if options.remove :
                 print "Suppression du dossier ..."
-                shutil.rmtree(directoyrName)
+                shutil.rmtree(directoyrNameSansSlash)
 
 if __name__ == '__main__':
     main()
