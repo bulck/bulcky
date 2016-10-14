@@ -41,7 +41,7 @@ def main():
     parser = OptionParser(usage=usage)
 
     parser.add_option("-r", "--remove", dest="remove",
-                      action="store_false", default=False,
+                      action="store_true", default=False,
                       help="supprime les fichiers")
     parser.add_option("-d", "--directory", dest="directory",
                       action="store", type="string",
@@ -82,7 +82,8 @@ def main():
             # On supprime les images
             if options.remove :
                 print "Suppression du dossier ..."
-                shutil.rmtree(directoyrNameSansSlash)
+                os.system("rm -R " + directoyrName) 
+                #shutil.rmtree(directoyrNameSansSlash)
 
 if __name__ == '__main__':
     main()
