@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+# DefaultProduct=0x1F02 --> Annecy
+# TargetProduct=0x14dc --> Annecy
 
 if ! [ -f /etc/usb_modeswitch.d/12d1\:1f01 ]; then
     cat << EOF > /etc/usb_modeswitch.d/12d1\:1f01
